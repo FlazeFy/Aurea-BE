@@ -13,6 +13,27 @@ datasource db {
   provider = "mysql"
 }
 
+enum Gender {
+  male
+  female
+}
+
+enum DayName {
+  sun
+  mon
+  tue
+  wed
+  thu
+  fri
+  sat
+}
+
+enum Time {
+  morning
+  afternoon
+  night 
+}
+
 model dictionary {
   id              String   @id @db.Char(36)
   dictionary_name String   @unique @db.Char(36)
@@ -31,6 +52,7 @@ model user {
   bio               String?   @db.VarChar(500)
   profile_image     String?   @db.Text
   born_at           DateTime? @db.Date
+  gender            Gender
   // Metadata
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
@@ -40,6 +62,9 @@ model user {
   allergics     allergic[]
   care_products care_product[] 
   google_tokens google_token[]
+  feedbacks     feedback[]
+  comments      comment[]
+  likes         like[]
 }
 
 model history {
@@ -101,4 +126,93 @@ model care_product {
 
   // Relations
   creator user? @relation(fields: [created_by], references: [id])
+
+  inventories inventory[]
+  comments    comment[]
+  likes       like[]
+}
+
+model inventory {
+  id              String   @id @db.Char(36)
+  care_product_id String   @db.Char(36)
+  qty             Int
+  inventory_note  String?  @db.VarChar(255)
+
+  // Metadata
+  created_at      DateTime @default(now())
+  created_by      String   @db.Char(36)
+
+  // Relations
+  care_product care_product @relation(fields: [care_product_id], references: [id])
+
+  used_schedules used_schedule[]
+}
+
+model used_schedule {
+  id              String  @id @db.Char(36)
+  inventory_id    String  @db.Char(36)
+  day_name        DayName
+  time            Time
+  schedule_note   String? @db.VarChar(255)
+
+  // Metadata
+  created_at      DateTime @default(now())
+
+  // Relations
+  inventory inventory @relation(fields: [inventory_id], references: [id])
+
+  schedule_marks schedule_mark[]
+}
+
+model schedule_mark {
+  id                String  @id @db.Char(36)
+  used_schedule_id  String  @db.Char(36)
+
+  // Metadata
+  created_at        DateTime @default(now())
+
+  // Relations
+  used_schedule used_schedule @relation(fields: [used_schedule_id], references: [id])
+}
+
+// Note : Feedback for apps
+model feedback {
+  id            String   @id @db.Char(36)
+  feedback_rate Int
+  feedback_note String   @db.Char(255)
+  // Metadata
+  created_by    String   @db.Char(36)
+  created_at    DateTime @default(now())
+
+  // Relation
+  user user? @relation(fields: [created_by], references: [id])
+}
+
+model comment {
+  id              String   @id @db.Char(36)
+  care_product_id String   @db.Char(36)
+  comment_body    String   @db.VarChar(500)
+
+  // Metadata
+  created_by      String   @db.Char(36)
+  created_at      DateTime @default(now())
+
+  // Relation
+  care_product_comment care_product @relation(fields: [care_product_id], references: [id])
+  user                 user?        @relation(fields: [created_by], references: [id])
+}
+
+model like {
+  id              String   @id @db.Char(36)
+  care_product_id String   @db.Char(36)
+
+  // Metadata
+  created_by      String   @db.Char(36)
+  created_at      DateTime @default(now())
+
+  // Relations
+  care_product care_product @relation(fields: [care_product_id], references: [id])
+  user         user         @relation(fields: [created_by], references: [id])
+
+  @@unique([care_product_id, created_by])
 }
