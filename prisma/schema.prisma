@@ -12,3 +12,93 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model dictionary {
+  id              String   @id @db.Char(36)
+  dictionary_name String   @unique @db.Char(36)
+  dictionary_type String   @db.Char(36)
+  // Metadata
+  created_at      DateTime @default(now())
+}
+
+model user {
+  id                String    @id @db.Char(36)
+  username          String    @db.Char(36)
+  password          String    @db.Char(36)
+  email             String    @unique @db.VarChar(255)
+  telegram_user_id  String?   @unique @db.VarChar(10)
+  telegram_is_valid Boolean   @default(false)
+  bio               String?   @db.VarChar(500)
+  profile_image     String?   @db.Text
+  born_at           DateTime? @db.Date
+  // Metadata
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  // Relations
+  histories     history[]
+  allergics     allergic[]
+  care_products care_product[] 
+  google_tokens google_token[]
+}
+
+model history {
+  id              String   @id @db.Char(36)
+  history_type    String   @unique @db.Char(36)
+  history_context String   @db.Char(36)
+  // Metadata
+  created_by      String?  @db.Char(36)
+  created_at      DateTime @default(now())
+
+  // Relation
+  user user? @relation(fields: [created_by], references: [id])
+}
+
+model allergic {
+  id               String   @id @db.Char(36)
+  allergic_context String   @db.Char(36)
+  allergic_desc    String?  @db.VarChar(255)
+  // Metadata
+  created_by       String   @db.Char(36)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  // Relation
+  user user @relation(fields: [created_by], references: [id])
+}
+
+model google_token {
+  id            String   @id @db.Char(36)
+  access_token  String   @db.Text
+  refresh_token String   @db.Text
+  expiry        DateTime
+  // Metadata
+  created_by    String   @db.Char(36)
+
+  // Relation
+  user user @relation(fields: [created_by], references: [id])
+}
+
+model care_product {
+  id                String   @id @db.Char(36)
+  product_name      String   @db.VarChar(255)
+  brand             String   @db.VarChar(100)
+  product_category  String   @db.Char(36)
+  product_type      String   @db.Char(36)
+  ingredients       Json?    
+  key_ingredients   Json?   
+  alcohol_free      Boolean  @default(false)
+  fragrance_free    Boolean  @default(false)
+  paraben_free      Boolean  @default(false)
+  recommended_for   String?  @db.VarChar(255)
+  suitable_skin     String?  @db.VarChar(100)
+  usage_instruction String?  @db.Text
+  is_active         Boolean  @default(true)
+  // Metadata
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  created_by        String?  @db.Char(36)
+
+  // Relations
+  creator user? @relation(fields: [created_by], references: [id])
+}
