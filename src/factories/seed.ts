@@ -1,11 +1,14 @@
 import 'dotenv/config'
 import { prisma } from '../lib/prisma'
 import { allergicFactoryMany } from './allergic.factory'
+import { careProductFactoryMany } from './care_product.factory'
 import { dictionaryFactory } from './dictionary.factory'
 import { historyFactoryMany } from './history.factory'
+import { inventoryFactoryMany } from './inventory.factory'
 import { userFactoryMany } from './user.factory'
 
 const seedDictionary = async () => {
+    // Manual defined dictionary
     const dct = [
         { dictionary_type: 'gender', dictionary_name: 'male' },
         { dictionary_type: 'gender', dictionary_name: 'female' },
@@ -22,6 +25,8 @@ const main = async () => {
         await userFactoryMany(20)
         await allergicFactoryMany(10)
         await historyFactoryMany(60)
+        await careProductFactoryMany(80)
+        await inventoryFactoryMany(60)
     } catch (error) {
         console.error(error)
     } finally {

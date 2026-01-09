@@ -65,11 +65,12 @@ model user {
   feedbacks     feedback[]
   comments      comment[]
   likes         like[]
+  inventories   inventory[]
 }
 
 model history {
   id              String   @id @db.Char(36)
-  history_type    String   @unique @db.Char(36)
+  history_type    String   @db.Char(36)
   history_context String   @db.Char(36)
   // Metadata
   created_by      String?  @db.Char(36)
@@ -143,6 +144,7 @@ model inventory {
   created_by      String   @db.Char(36)
 
   // Relations
+  user         user         @relation(fields: [created_by], references: [id])
   care_product care_product @relation(fields: [care_product_id], references: [id])
 
   used_schedules used_schedule[]
