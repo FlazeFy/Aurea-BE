@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import { prisma } from '../lib/prisma'
+import { allergicFactoryMany } from './allergic.factory'
 import { dictionaryFactory } from './dictionary.factory'
+import { historyFactoryMany } from './history.factory'
 import { userFactoryMany } from './user.factory'
 
 const seedDictionary = async () => {
@@ -18,6 +20,8 @@ const main = async () => {
         // Define seeder
         await seedDictionary()
         await userFactoryMany(20)
+        await allergicFactoryMany(10)
+        await historyFactoryMany(60)
     } catch (error) {
         console.error(error)
     } finally {

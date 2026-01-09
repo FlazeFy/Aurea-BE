@@ -10,6 +10,7 @@ const randomGender = (): Gender => {
 }
 
 export const userFactory = async (overrides: UserFactoryOverride = {}) => {
+    // Build dummy
     const data: Prisma.userCreateInput = {
         id: randomUUID(),
         username: faker.internet.username(),
@@ -26,7 +27,6 @@ export const userFactory = async (overrides: UserFactoryOverride = {}) => {
 
     return prisma.user.create({data})
 }
-
 
 export const userFactoryMany = async (count: number, overrides: UserFactoryOverride = {}) => {
     for (let i = 0; i < count; i++) {
