@@ -3,8 +3,25 @@ import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
 import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
+import { buildRandomArray, randomEnumValue } from '../helpers/generator.helper'
 
 type CareProductFactoryOverride = Partial<Prisma.care_productCreateInput>
+
+const randomIngredient = (isNull: boolean): Prisma.InputJsonValue | Prisma.NullableJsonNullValueInput => {
+    return isNull ? Prisma.JsonNull : buildRandomArray(['water', 'glycerin', 'niacinamide', 'aloe'], 2, 4)
+}
+
+const randomKeyIngredient = (isNull: boolean): Prisma.InputJsonValue | Prisma.NullableJsonNullValueInput => {
+    return isNull ? Prisma.JsonNull : buildRandomArray(['niacinamide', 'ceramide', 'hyaluronic acid'], 1, 2)
+}
+
+const randomSuitableSkin = (): string => {
+    return randomEnumValue(Object.values(['acne-prone', 'dry skin', 'oily skin', 'all skin types']))
+}
+
+const randomRecommendedFor = (): string => {
+    return randomEnumValue(Object.values(['dry', 'oily', 'combination', 'normal']))
+}
 
 export const careProductFactory = async (overrides: CareProductFactoryOverride = {}) => {
     // Get random user from repo
@@ -17,13 +34,13 @@ export const careProductFactory = async (overrides: CareProductFactoryOverride =
         brand: faker.company.name(),
         product_category: faker.word.words(1),
         product_type: faker.word.words(1),
-        ingredients: faker.datatype.boolean() ? faker.helpers.arrayElements(['water', 'glycerin', 'niacinamide', 'aloe'], { min: 2, max: 4 }) : null,
-        key_ingredients: faker.datatype.boolean() ? faker.helpers.arrayElements(['niacinamide', 'ceramide', 'hyaluronic acid'], { min: 1, max: 2 }) : null,
+        ingredients: randomIngredient(faker.datatype.boolean()),
+        key_ingredients: randomKeyIngredient(faker.datatype.boolean()),
         alcohol_free: faker.datatype.boolean(),
         fragrance_free: faker.datatype.boolean(),
         paraben_free: faker.datatype.boolean(),
-        recommended_for: faker.helpers.arrayElement(['acne-prone', 'dry skin', 'oily skin', 'all skin types']),
-        suitable_skin: faker.helpers.arrayElement(['dry', 'oily', 'combination', 'normal']),
+        recommended_for: randomRecommendedFor(),
+        suitable_skin: randomSuitableSkin(),
         usage_instruction: faker.lorem.sentences(2),
         is_active: true,
         creator: user ? { connect: { id: user.id } } : undefined,

@@ -21,12 +21,8 @@ export const inventoryFactory = async (overrides: InventoryFactoryOverride = {})
     const data: Prisma.inventoryCreateInput = {
         id: randomUUID(),
         qty: faker.number.int({ min: 1, max: 10 }),
-        inventory_note: faker.datatype.boolean()
-            ? faker.lorem.sentence()
-            : null,
-        care_product: {
-            connect: { id: careProduct.id },
-        },
+        inventory_note: faker.datatype.boolean() ? faker.lorem.sentence() : null,
+        care_product: { connect: { id: careProduct.id }},
         user: { connect: { id: user.id }},
         ...overrides,
     }

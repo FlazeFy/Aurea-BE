@@ -5,6 +5,8 @@ import { careProductFactoryMany } from './care_product.factory'
 import { dictionaryFactory } from './dictionary.factory'
 import { historyFactoryMany } from './history.factory'
 import { inventoryFactoryMany } from './inventory.factory'
+import { scheduleMarkFactoryMany } from './schedule_mark.factory'
+import { usedScheduleFactoryMany } from './used_schedule.factory'
 import { userFactoryMany } from './user.factory'
 
 const seedDictionary = async () => {
@@ -27,6 +29,8 @@ const main = async () => {
         await historyFactoryMany(60)
         await careProductFactoryMany(80)
         await inventoryFactoryMany(60)
+        await usedScheduleFactoryMany(50)
+        await scheduleMarkFactoryMany(250)
     } catch (error) {
         console.error(error)
     } finally {

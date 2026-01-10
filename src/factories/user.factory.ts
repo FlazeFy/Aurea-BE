@@ -2,11 +2,12 @@ import { prisma } from '../lib/prisma'
 import { Gender, Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
 import { randomUUID } from 'crypto'
+import { randomEnumValue } from '../helpers/generator.helper'
 
 type UserFactoryOverride = Partial<Prisma.userCreateInput>
 
 const randomGender = (): Gender => {
-    return faker.helpers.arrayElement([Gender.male, Gender.female])
+    return randomEnumValue(Object.values([Gender.male, Gender.female]))
 }
 
 export const userFactory = async (overrides: UserFactoryOverride = {}) => {
