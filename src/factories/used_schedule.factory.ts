@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { DayName, Time } from '../generated/prisma/client'
 import { randomEnumValue } from '../helpers/generator.helper'
 import { getRandomInventoryByUser } from '../repositories/inventory.repository'
@@ -29,7 +28,7 @@ export const usedScheduleFactory = async (overrides: UsedScheduleFactoryOverride
 
     // Build dummy
     const data: Prisma.used_scheduleCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         inventory: { connect: { id: inventory?.id }},
         day_name: randomDayName(),
         time: randomTime(),

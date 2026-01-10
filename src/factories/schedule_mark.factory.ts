@@ -1,9 +1,9 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
-import { randomUUID } from 'crypto'
 import { getRandomUsedScheduleByInventory } from '../repositories/used_schedule.repository'
 import { getRandomInventoryWithUsedScheduleByUser } from '../repositories/inventory.repository'
 import { getRandomUserWithInventoryAndUsedSchedule } from '../repositories/user.repository'
+import { faker } from '@faker-js/faker'
 
 type ScheduleMarkFactoryOverride = Partial<Prisma.schedule_markCreateInput>
 
@@ -25,7 +25,7 @@ export const scheduleMarkFactory = async (overrides: ScheduleMarkFactoryOverride
 
     // Build dummy
     const data: Prisma.schedule_markCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         used_schedule: { connect: { id: usedSchedule?.id },},
         ...overrides,
     }

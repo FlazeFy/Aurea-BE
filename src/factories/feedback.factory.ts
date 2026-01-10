@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
 
 type FeedbackFactoryOverride = Partial<Prisma.feedbackCreateInput>
@@ -15,7 +14,7 @@ export const feedbackFactory = async (overrides: FeedbackFactoryOverride = {}) =
 
     // Build dummy
     const data: Prisma.feedbackCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         feedback_rate: faker.number.int({ min: 1, max: 5 }),
         feedback_note: faker.lorem.sentence(),
         user: { connect: { id: user.id } },

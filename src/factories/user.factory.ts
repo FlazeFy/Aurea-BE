@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Gender, Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { randomEnumValue } from '../helpers/generator.helper'
 
 type UserFactoryOverride = Partial<Prisma.userCreateInput>
@@ -13,13 +12,13 @@ const randomGender = (): Gender => {
 export const userFactory = async (overrides: UserFactoryOverride = {}) => {
     // Build dummy
     const data: Prisma.userCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         username: faker.internet.username(),
         email: faker.internet.email().toLowerCase(),
         password: faker.internet.password(), 
         gender: randomGender(),
         bio: faker.datatype.boolean() ? faker.lorem.sentences(2) : null,
-        born_at: faker.date.birthdate({ min: 18, max: 40, mode: 'age' }),
+        born_at: faker.date.birthdate({ min: 18, max: 50, mode: 'age' }),
         profile_image: null,
         telegram_user_id: null,
         telegram_is_valid: false,

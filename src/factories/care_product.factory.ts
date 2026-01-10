@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
 import { buildRandomArray, randomEnumValue } from '../helpers/generator.helper'
 
@@ -29,7 +28,7 @@ export const careProductFactory = async (overrides: CareProductFactoryOverride =
 
     // Build dummy
     const data: Prisma.care_productCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         product_name: faker.commerce.productName(),
         brand: faker.company.name(),
         product_category: faker.word.words(1),

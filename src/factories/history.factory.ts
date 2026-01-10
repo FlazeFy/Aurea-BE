@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
 
 type HistoryFactoryOverride = Partial<Prisma.historyCreateInput>
@@ -12,7 +11,7 @@ export const historyFactory = async (overrides: HistoryFactoryOverride = {}) => 
 
     // Build dummy
     const data: Prisma.historyCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         history_type: faker.word.words(1),
         history_context: faker.word.words(2),
         user: user ? { connect: { id: user.id } } : undefined,

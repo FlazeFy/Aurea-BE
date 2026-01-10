@@ -7,6 +7,7 @@ import { dictionaryFactory } from './dictionary.factory'
 import { feedbackFactoryMany } from './feedback.factory'
 import { historyFactoryMany } from './history.factory'
 import { inventoryFactoryMany } from './inventory.factory'
+import { likeFactoryMany } from './like.factory'
 import { scheduleMarkFactoryMany } from './schedule_mark.factory'
 import { usedScheduleFactoryMany } from './used_schedule.factory'
 import { userFactoryMany } from './user.factory'
@@ -22,8 +23,25 @@ const seedDictionary = async () => {
     }    
 }
 
+const clearAllTables = async () => {
+    await prisma.schedule_mark.deleteMany()
+    await prisma.used_schedule.deleteMany()
+    await prisma.inventory.deleteMany()
+    await prisma.comment.deleteMany()
+    await prisma.like.deleteMany()
+    await prisma.feedback.deleteMany()
+    await prisma.care_product.deleteMany()
+    await prisma.history.deleteMany()
+    await prisma.allergic.deleteMany()
+    await prisma.user.deleteMany()
+    await prisma.dictionary.deleteMany()
+}
+
 const main = async () => {
     try {
+        // Empty all table
+        await clearAllTables()
+
         // Define seeder
         await seedDictionary()
         await userFactoryMany(20)
@@ -35,6 +53,7 @@ const main = async () => {
         await scheduleMarkFactoryMany(250)
         await feedbackFactoryMany(15)
         await commentFactoryMany(160)
+        await likeFactoryMany(200)
     } catch (error) {
         console.error(error)
     } finally {

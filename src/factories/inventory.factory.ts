@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
 import { getRandomCareProduct } from '../repositories/care_product.repository'
 
@@ -19,7 +18,7 @@ export const inventoryFactory = async (overrides: InventoryFactoryOverride = {})
 
     // Build dummy
     const data: Prisma.inventoryCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         qty: faker.number.int({ min: 1, max: 10 }),
         inventory_note: faker.datatype.boolean() ? faker.lorem.sentence() : null,
         care_product: { connect: { id: careProduct.id }},

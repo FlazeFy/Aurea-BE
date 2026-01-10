@@ -1,7 +1,6 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { randomUUID } from 'crypto'
 import { getRandomUser } from '../repositories/user.repository'
 import { getRandomCareProduct } from '../repositories/care_product.repository'
 
@@ -22,7 +21,7 @@ export const commentFactory = async (overrides: CommentFactoryOverride = {}) => 
 
     // Build dummy
     const data: Prisma.commentCreateInput = {
-        id: randomUUID(),
+        id: faker.string.uuid(),
         comment_body: faker.lorem.sentences(2),
         care_product_comment: { connect: { id: careProduct.id } },
         user: { connect: { id: user.id } },
