@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { getAllFeedbackService } from "../services/feedback.service"
+import { getAllFeedbackService, hardDeleteFeedbackByIdService } from "../services/feedback.service"
 
 export const getAllFeedback = async (req: Request, res: Response) => {
     try {
@@ -12,8 +12,7 @@ export const getAllFeedback = async (req: Request, res: Response) => {
 
         if (!result) {
             return res.status(404).json({
-                message: "Feedback not found",
-                data: null,
+                message: "Feedback not found"
             })
         }
 
@@ -26,6 +25,34 @@ export const getAllFeedback = async (req: Request, res: Response) => {
             },
         })
     } catch (error: any) {
+        return res.status(500).json({
+            message: "Something went wrong",
+        })
+    }
+}
+
+export const hardDeleteFeedbackById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const { id } = req.params
+
+        // Query
+        const feedback = await hardDeleteFeedbackByIdService(id)
+
+        // Validation
+        if (!feedback) {
+            return res.status(404).json({
+                message: "Feedback not found"
+            })
+        }
+
+        // Response
+        res.status(200).json({
+            message: "Delete feedback successful",
+            data: feedback,
+        })
+    } catch (error: any) {
+        // Response
         return res.status(500).json({
             message: "Something went wrong",
         })
