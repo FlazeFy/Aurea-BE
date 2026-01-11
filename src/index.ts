@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 
 // Router
 import feedbackRouter from "./routers/feedback.router"
+import historyRouter from "./routers/history.router"
 
 // Load env
 dotenv.config()
@@ -22,6 +23,7 @@ app.get("/", (req: Request, res: Response) => {
 })
 
 app.use("/api/feedbacks", feedbackRouter)
+app.use("/api/histories", historyRouter)
 
 // Start Server
 app.listen(PORT, () => {

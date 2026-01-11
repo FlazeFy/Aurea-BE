@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response } from "express"
 import { getAllFeedbackService, hardDeleteFeedbackByIdService } from "../services/feedback.service"
 
 export const getAllFeedback = async (req: Request, res: Response) => {
@@ -9,7 +9,6 @@ export const getAllFeedback = async (req: Request, res: Response) => {
 
         // Service : Get all feedback
         const result = await getAllFeedbackService(page, limit)
-
         if (!result) {
             return res.status(404).json({
                 message: "Feedback not found"
@@ -31,16 +30,14 @@ export const getAllFeedback = async (req: Request, res: Response) => {
     }
 }
 
-export const hardDeleteFeedbackById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteFeedbackById = async (req: Request, res: Response) => {
     try {
         // Param
         const { id } = req.params
 
-        // Query
-        const feedback = await hardDeleteFeedbackByIdService(id)
-
-        // Validation
-        if (!feedback) {
+        // Service : Hard delete feedback by id
+        const result = await hardDeleteFeedbackByIdService(id)
+        if (!result) {
             return res.status(404).json({
                 message: "Feedback not found"
             })
@@ -49,7 +46,7 @@ export const hardDeleteFeedbackById = async (req: Request, res: Response, next: 
         // Response
         res.status(200).json({
             message: "Delete feedback successful",
-            data: feedback,
+            data: result,
         })
     } catch (error: any) {
         // Response
