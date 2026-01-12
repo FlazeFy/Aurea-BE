@@ -17,3 +17,19 @@ export const getRandomUsedScheduleByInventory = async (inventoryId: string) => {
         select: { id: true },
     })
 }
+
+export const fetchUsedScheduleByIdRepo = async (id: string) => {
+    return prisma.used_schedule.findUnique({ where: { id } })
+}
+
+export const hardDeleteUsedScheduleByIdRepo = async (id: string, created_by: string | null) => {
+    return prisma.used_schedule.deleteMany({
+        where: {
+            id, ...(created_by !== null && {
+                inventory: {
+                    created_by
+                }
+            })
+        }
+    })
+}

@@ -1,7 +1,7 @@
 import { fetchAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositories/allergic.repository"
 
 export const hardDeleteAllergicByIdService = async (id: string, created_by: string | null) => {
-    // Query
+    // Repo : Find allergic by id
     const allergic = await fetchAllergicByIdRepo(id)
 
     // Validation
@@ -9,7 +9,7 @@ export const hardDeleteAllergicByIdService = async (id: string, created_by: stri
         return null
     }
 
-    // Query
+    // Repo : Delete allergic by id
     await hardDeleteAllergicByIdRepo(id, created_by)
 
     return allergic
