@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import feedbackRouter from "./routers/feedback.router"
 import historyRouter from "./routers/history.router"
 import dictionaryRouter from "./routers/dictionary.router"
+import allergicRouter from "./routers/allergic.router"
 
 // Load env
 dotenv.config()
@@ -26,6 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/feedbacks", feedbackRouter)
 app.use("/api/histories", historyRouter)
 app.use("/api/dictionaries", dictionaryRouter)
+app.use("/api/allergics", allergicRouter)
 
 // Start Server
 app.listen(PORT, () => {
