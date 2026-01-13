@@ -8,6 +8,7 @@ import historyRouter from "./routers/history.router"
 import dictionaryRouter from "./routers/dictionary.router"
 import allergicRouter from "./routers/allergic.router"
 import usedScheduleRouter from "./routers/used_schedule.router"
+import scheduleMarkRouter from "./routers/schedule_mark.router"
 
 // Load env
 dotenv.config()
@@ -30,6 +31,7 @@ app.use("/api/histories", historyRouter)
 app.use("/api/dictionaries", dictionaryRouter)
 app.use("/api/allergics", allergicRouter)
 app.use("/api/used_schedule", usedScheduleRouter)
+app.use("/api/schedule_mark", scheduleMarkRouter)
 
 // Start Server
 app.listen(PORT, () => {
