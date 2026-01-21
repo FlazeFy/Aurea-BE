@@ -5,3 +5,9 @@ export const findAdminByEmailRepo = async (email: string) => {
         where: { email }
     })
 }
+
+export const findAdminByIdRepo = async (id: string) => {
+    return prisma.admin.findUnique({
+        where: { id }
+    })
+}

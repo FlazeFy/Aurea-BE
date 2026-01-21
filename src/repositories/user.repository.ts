@@ -4,6 +4,12 @@ export const findUserByEmailRepo = async (email: string) => {
     return prisma.user.findUnique({ where: { email }})
 }
 
+export const findUserByIdRepo = async (id: string) => {
+    return prisma.user.findUnique({
+        where: { id }
+    })
+}
+
 export const getRandomUser = async () => {
     const count = await prisma.user.count()
 

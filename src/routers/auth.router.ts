@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { postLogin } from "../controllers/auth.controller"
+import { getRefreshToken, postLogin } from "../controllers/auth.controller"
 
 const router = Router()
 
 router.post("/login", postLogin)
+router.get("/refresh-token", getRefreshToken)
 
 export default router
