@@ -9,6 +9,7 @@ import dictionaryRouter from "./routers/dictionary.router"
 import allergicRouter from "./routers/allergic.router"
 import usedScheduleRouter from "./routers/used_schedule.router"
 import scheduleMarkRouter from "./routers/schedule_mark.router"
+import authRouter from './routers/auth.router'
 
 // Load env
 dotenv.config()
@@ -26,6 +27,7 @@ app.get("/", (req: Request, res: Response) => {
     res.status(200).send("Hello world")
 })
 
+app.use("/api/auth", authRouter)
 app.use("/api/feedbacks", feedbackRouter)
 app.use("/api/histories", historyRouter)
 app.use("/api/dictionaries", dictionaryRouter)

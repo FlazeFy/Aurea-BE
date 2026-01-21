@@ -1,5 +1,9 @@
 import { prisma } from '../lib/prisma'
 
+export const findUserByEmailRepo = async (email: string) => {
+    return prisma.user.findUnique({ where: { email }})
+}
+
 export const getRandomUser = async () => {
     const count = await prisma.user.count()
 
