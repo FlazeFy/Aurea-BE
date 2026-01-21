@@ -11,6 +11,7 @@ import { likeFactoryMany } from './like.factory'
 import { scheduleMarkFactoryMany } from './schedule_mark.factory'
 import { usedScheduleFactoryMany } from './used_schedule.factory'
 import { userFactoryMany } from './user.factory'
+import { adminFactoryMany } from './admin.factory'
 
 const seedDictionary = async () => {
     // Manual defined dictionary
@@ -35,6 +36,7 @@ const clearAllTables = async () => {
     await prisma.allergic.deleteMany()
     await prisma.user.deleteMany()
     await prisma.dictionary.deleteMany()
+    await prisma.admin.deleteMany()
 }
 
 const main = async () => {
@@ -45,6 +47,7 @@ const main = async () => {
         // Define seeder
         await seedDictionary()
         await userFactoryMany(20)
+        await adminFactoryMany(5)
         await allergicFactoryMany(10)
         await historyFactoryMany(60)
         await careProductFactoryMany(80)
