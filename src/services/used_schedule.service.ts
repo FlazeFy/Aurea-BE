@@ -1,8 +1,8 @@
-import { fetchUsedScheduleByIdRepo, hardDeleteUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
+import { findUsedScheduleByIdRepo, hardDeleteUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
 
 export const hardDeleteUsedScheduleByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find used schedule by id
-    const used_schedule = await fetchUsedScheduleByIdRepo(id)
+    const used_schedule = await findUsedScheduleByIdRepo(id)
     if (!used_schedule) {
         return null
     }

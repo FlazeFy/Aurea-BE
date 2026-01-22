@@ -1,8 +1,18 @@
-import { fetchAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositories/allergic.repository"
+import { findAllAllergicRepo, findAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositories/allergic.repository"
+
+export const getAllAllergicService = async (page: number, limit: number, userId: string | null) => {
+    // Repo : Find all allergic
+    const res = await findAllAllergicRepo(page, limit, userId)
+    if (!res || res.data.length === 0) {
+        return null
+    }
+
+    return res
+}
 
 export const hardDeleteAllergicByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find allergic by id
-    const allergic = await fetchAllergicByIdRepo(id)
+    const allergic = await findAllergicByIdRepo(id)
     if (!allergic) {
         return null
     }

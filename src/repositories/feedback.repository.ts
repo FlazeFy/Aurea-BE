@@ -25,7 +25,7 @@ export const findAllFeedbackRepo = async (page: number, limit: number) => {
     return {data, total}
 }
 
-export const fetchFeedbackByIdRepo = async (id: string) => {
+export const findFeedbackByIdRepo = async (id: string) => {
     return prisma.feedback.findUnique({ where: { id } })
 }
 

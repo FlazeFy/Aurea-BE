@@ -1,8 +1,8 @@
-import { fetchScheduleMarkByIdRepo, hardDeleteScheduleMarkByIdRepo } from "../repositories/schedule_mark.repository"
+import { findScheduleMarkByIdRepo, hardDeleteScheduleMarkByIdRepo } from "../repositories/schedule_mark.repository"
 
 export const hardDeleteScheduleMarkByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find schedule mark by id
-    const used_schedule = await fetchScheduleMarkByIdRepo(id)
+    const used_schedule = await findScheduleMarkByIdRepo(id)
     if (!used_schedule) {
         return null
     }

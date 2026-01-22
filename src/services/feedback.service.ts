@@ -1,4 +1,4 @@
-import { deleteFeedbackByIdRepo, fetchFeedbackByIdRepo, findAllFeedbackRepo } from "../repositories/feedback.repository"
+import { deleteFeedbackByIdRepo, findFeedbackByIdRepo, findAllFeedbackRepo } from "../repositories/feedback.repository"
 
 export const getAllFeedbackService = async (page: number,limit: number) => {
     // Repo : Find all feedback
@@ -12,7 +12,7 @@ export const getAllFeedbackService = async (page: number,limit: number) => {
 
 export const hardDeleteFeedbackByIdService = async (id: string) => {
     // Repo : Check if feedback exist
-    const feedback = await fetchFeedbackByIdRepo(id)
+    const feedback = await findFeedbackByIdRepo(id)
     if (!feedback) {
         return null
     }

@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const fetchScheduleMarkByIdRepo = async (id: string) => {
+export const findScheduleMarkByIdRepo = async (id: string) => {
     return prisma.schedule_mark.findUnique({ where: { id } })
 }
 

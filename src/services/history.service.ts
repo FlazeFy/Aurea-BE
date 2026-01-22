@@ -1,8 +1,8 @@
-import { fetchHistoryByIdRepo, hardDeleteHistoryByIdRepo } from "../repositories/history.repository"
+import { findHistoryByIdRepo, hardDeleteHistoryByIdRepo } from "../repositories/history.repository"
 
 export const hardDeleteHistoryByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find history by id
-    const history = await fetchHistoryByIdRepo(id)
+    const history = await findHistoryByIdRepo(id)
     if (!history) {
         return null
     }

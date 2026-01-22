@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const fetchHistoryByIdRepo = async (id: string) => {
+export const findHistoryByIdRepo = async (id: string) => {
     return prisma.history.findUnique({
         where: { id },
     })

@@ -18,7 +18,7 @@ export const getRandomUsedScheduleByInventory = async (inventoryId: string) => {
     })
 }
 
-export const fetchUsedScheduleByIdRepo = async (id: string) => {
+export const findUsedScheduleByIdRepo = async (id: string) => {
     return prisma.used_schedule.findUnique({ where: { id } })
 }
 
