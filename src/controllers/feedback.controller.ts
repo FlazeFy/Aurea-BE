@@ -43,13 +43,12 @@ export const hardDeleteFeedbackById = async (req: Request, res: Response) => {
             })
         }
 
-        // Response
+        // Success response
         res.status(200).json({
             message: "Delete feedback successful",
             data: result,
         })
     } catch (error: any) {
-        // Response
         return res.status(500).json({
             message: "Something went wrong",
         })

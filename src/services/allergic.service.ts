@@ -3,8 +3,6 @@ import { fetchAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositori
 export const hardDeleteAllergicByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find allergic by id
     const allergic = await fetchAllergicByIdRepo(id)
-
-    // Validation
     if (!allergic) {
         return null
     }

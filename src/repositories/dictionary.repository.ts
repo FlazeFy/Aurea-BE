@@ -11,8 +11,16 @@ export const findAllDictionaryRepo = async (page: number, limit: number) => {
                 dictionary_name: "asc",
             }
         }),
-        prisma.feedback.count(),
+        prisma.dictionary.count(),
     ])
 
     return {data, total}
+}
+
+export const findDictionaryByIdRepo = async (id: string) => {
+    return prisma.dictionary.findUnique({ where: { id } })
+}
+
+export const deleteDictionaryByIdRepo = async (id: string) => {
+    return prisma.dictionary.delete({ where: { id } })
 }

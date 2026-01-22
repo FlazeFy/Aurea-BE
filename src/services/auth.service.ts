@@ -8,9 +8,11 @@ export const loginService = async (email: string, password: string) => {
     // Repo : Check admin first
     const admin = await findAdminByEmailRepo(email)
     if (admin) {
+        // Validate the password
         const validPassword = await compare(password, admin.password)
         if (!validPassword) return null
 
+        // Generate auth token
         const token = createToken({ id: admin.id, role: "admin" })
         return {
             name: admin.username,
@@ -23,9 +25,11 @@ export const loginService = async (email: string, password: string) => {
     // Repo : Check user if not admin
     const user = await findUserByEmailRepo(email)
     if (user) {
+        // Validate the password
         const validPassword = await compare(password, user.password)
         if (!validPassword) return null
 
+        // Generate auth token
         const token = createToken({ id: user.id, role: "user" })
         return {
             name: user.username,
@@ -50,6 +54,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     // Repo : Check admin first
     const admin = await findAdminByIdRepo(id)
     if (admin) {
+        // Generate auth token
         const token = createToken({ id: id, role: "admin" })
         return {
             name: admin.username,
@@ -62,6 +67,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     // Repo : Check user if not admin
     const user = await findUserByIdRepo(id)
     if (user) {
+        // Generate auth token
         const token = createToken({ id: id, role: "user" })
         return {
             name: user.username,

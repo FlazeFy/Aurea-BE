@@ -1,7 +1,5 @@
-import { Request, Response } from "express";
-import { loginService, refreshTokenService } from "../services/auth.service";
-import jwt from "jsonwebtoken";
-import { createToken } from "../helpers/token.helper";
+import { Request, Response } from "express"
+import { loginService, refreshTokenService } from "../services/auth.service"
 
 export const postLogin = async (req: Request, res: Response) => {
     try {

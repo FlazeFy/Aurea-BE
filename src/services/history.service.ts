@@ -3,8 +3,6 @@ import { fetchHistoryByIdRepo, hardDeleteHistoryByIdRepo } from "../repositories
 export const hardDeleteHistoryByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find history by id
     const history = await fetchHistoryByIdRepo(id)
-
-    // Validation
     if (!history) {
         return null
     }

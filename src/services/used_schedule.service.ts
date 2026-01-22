@@ -3,8 +3,6 @@ import { fetchUsedScheduleByIdRepo, hardDeleteUsedScheduleByIdRepo } from "../re
 export const hardDeleteUsedScheduleByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find used schedule by id
     const used_schedule = await fetchUsedScheduleByIdRepo(id)
-
-    // Validation
     if (!used_schedule) {
         return null
     }
