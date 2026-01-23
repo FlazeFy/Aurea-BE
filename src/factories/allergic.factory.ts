@@ -8,9 +8,8 @@ type AllergicFactoryOverride = Partial<Prisma.allergicCreateInput>
 export const allergicFactory = async (overrides: AllergicFactoryOverride = {}) => {
     // Get random user from repo
     const user = await getRandomUser()
-
     if (!user) {
-        throw new Error('Allergic requires a user')
+        throw new Error('Allergic requires an user')
     }
 
     // Build dummy

@@ -9,7 +9,7 @@ export const feedbackFactory = async (overrides: FeedbackFactoryOverride = {}) =
     // Get random user from repo
     const user = await getRandomUser()
     if (!user) {
-        throw new Error('Cannot create feedback without users')
+        throw new Error('Feedback requires an user')
     }
 
     // Build dummy

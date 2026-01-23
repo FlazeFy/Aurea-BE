@@ -11,7 +11,7 @@ export const scheduleMarkFactory = async (overrides: ScheduleMarkFactoryOverride
     // Get random user from repo
     const user = await getRandomUserWithInventoryAndUsedSchedule()
     if (!user) {
-        throw new Error('Inventory requires user')
+        throw new Error('Inventory requires an user')
     }
 
     // Get random inventory from repo

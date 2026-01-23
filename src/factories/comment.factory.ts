@@ -10,13 +10,13 @@ export const commentFactory = async (overrides: CommentFactoryOverride = {}) => 
     // Get random user
     const user = await getRandomUser()
     if (!user) {
-        throw new Error('Cannot create comment without users')
+        throw new Error('Comment requires an user')
     }
 
     // Get random care product
     const careProduct = await getRandomCareProduct()
     if (!careProduct) {
-        throw new Error('Cannot create comment without care products')
+        throw new Error('Comment requires a care product')
     }
 
     // Build dummy

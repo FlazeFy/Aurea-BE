@@ -10,13 +10,13 @@ export const likeFactory = async (overrides: LikeFactoryOverride = {}) => {
     // Get random user
     const user = await getRandomUser()
     if (!user) {
-        throw new Error('Cannot create like without users')
+        throw new Error('Like requires an user')
     }
 
     // Get random care product
     const careProduct = await getRandomCareProduct()
     if (!careProduct) {
-        throw new Error('Cannot create like without care products')
+        throw new Error('Like requires a care products')
     }
 
     // Check if like already exists

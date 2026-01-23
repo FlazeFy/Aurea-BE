@@ -8,13 +8,16 @@ type HistoryFactoryOverride = Partial<Prisma.historyCreateInput>
 export const historyFactory = async (overrides: HistoryFactoryOverride = {}) => {
     // Get random user from repo
     const user = await getRandomUser()
+    if (!user) {
+        throw new Error('History requires an user')
+    }
 
     // Build dummy
     const data: Prisma.historyCreateInput = {
         id: faker.string.uuid(),
         history_type: faker.word.words(1),
         history_context: faker.word.words(2),
-        user: user ? { connect: { id: user.id } } : undefined,
+        user: { connect: { id: user.id } },
         ...overrides,
     }
 
