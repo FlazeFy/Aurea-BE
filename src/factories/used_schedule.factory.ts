@@ -3,8 +3,8 @@ import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
 import { DayName, Time } from '../generated/prisma/client'
 import { randomEnumValue } from '../helpers/generator.helper'
-import { getRandomInventoryByUser } from '../repositories/inventory.repository'
-import { getRandomUserWithInventory } from '../repositories/user.repository'
+import { findRandomInventoryByUserRepo } from '../repositories/inventory.repository'
+import { findRandomUserWithInventoryRepo } from '../repositories/user.repository'
 
 type UsedScheduleFactoryOverride =Partial<Prisma.used_scheduleCreateInput>
 
@@ -18,13 +18,13 @@ export const randomTime = (): Time => {
 
 export const usedScheduleFactory = async (overrides: UsedScheduleFactoryOverride = {}) => {
     // Get random user from repo
-    const user = await getRandomUserWithInventory()
+    const user = await findRandomUserWithInventoryRepo()
     if (!user) {
         throw new Error('Inventory requires an user')
     }
 
     // Get random inventory from repo
-    const inventory = await getRandomInventoryByUser(user.id)
+    const inventory = await findRandomInventoryByUserRepo(user.id)
 
     // Build dummy
     const data: Prisma.used_scheduleCreateInput = {

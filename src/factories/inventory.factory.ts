@@ -1,16 +1,16 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { getRandomUser } from '../repositories/user.repository'
-import { getRandomCareProduct } from '../repositories/care_product.repository'
+import { findRandomUserRepo} from '../repositories/user.repository'
+import { findRandomCareProductRepo } from '../repositories/care_product.repository'
 
 type InventoryFactoryOverride = Partial<Prisma.inventoryCreateInput>
 
 export const inventoryFactory = async (overrides: InventoryFactoryOverride = {}) => {
     // Get random user from repo
-    const user = await getRandomUser()
+    const user = await findRandomUserRepo()
     // Get random product from repo
-    const careProduct = await getRandomCareProduct()
+    const careProduct = await findRandomCareProductRepo()
 
     if (!user || !careProduct) {
         throw new Error('Inventory requires user and care product')

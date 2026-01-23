@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const getRandomCareProduct = async () => {
+export const findRandomCareProductRepo = async () => {
     const count = await prisma.care_product.count()
 
     if (count === 0) {

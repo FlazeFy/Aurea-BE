@@ -1,13 +1,13 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { getRandomUser } from '../repositories/user.repository'
+import { findRandomUserRepo} from '../repositories/user.repository'
 
 type FeedbackFactoryOverride = Partial<Prisma.feedbackCreateInput>
 
 export const feedbackFactory = async (overrides: FeedbackFactoryOverride = {}) => {
     // Get random user from repo
-    const user = await getRandomUser()
+    const user = await findRandomUserRepo()
     if (!user) {
         throw new Error('Feedback requires an user')
     }

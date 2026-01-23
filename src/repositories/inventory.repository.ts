@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const getRandomInventoryByUser = async (userId: string) => {
+export const findRandomInventoryByUserRepo = async (userId: string) => {
     const count = await prisma.inventory.count({
         where: { created_by: userId },
     })
@@ -18,7 +18,7 @@ export const getRandomInventoryByUser = async (userId: string) => {
     })
 }
 
-export const getRandomInventoryWithUsedScheduleByUser = async (userId: string) => {
+export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: string) => {
     const count = await prisma.inventory.count({
         where: { created_by: userId, used_schedules: { some: {} } },
     })

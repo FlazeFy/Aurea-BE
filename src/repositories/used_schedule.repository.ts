@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const getRandomUsedScheduleByInventory = async (inventoryId: string) => {
+export const findRandomUsedScheduleByInventoryRepo = async (inventoryId: string) => {
     const count = await prisma.used_schedule.count({
         where: { inventory_id: inventoryId },
     })

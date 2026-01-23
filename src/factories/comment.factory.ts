@@ -1,20 +1,20 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { getRandomUser } from '../repositories/user.repository'
-import { getRandomCareProduct } from '../repositories/care_product.repository'
+import { findRandomUserRepo} from '../repositories/user.repository'
+import { findRandomCareProductRepo } from '../repositories/care_product.repository'
 
 type CommentFactoryOverride = Partial<Prisma.commentCreateInput>
 
 export const commentFactory = async (overrides: CommentFactoryOverride = {}) => {
     // Get random user
-    const user = await getRandomUser()
+    const user = await findRandomUserRepo()
     if (!user) {
         throw new Error('Comment requires an user')
     }
 
     // Get random care product
-    const careProduct = await getRandomCareProduct()
+    const careProduct = await findRandomCareProductRepo()
     if (!careProduct) {
         throw new Error('Comment requires a care product')
     }

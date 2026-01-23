@@ -1,7 +1,7 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { getRandomUser } from '../repositories/user.repository'
+import { findRandomUserRepo} from '../repositories/user.repository'
 import { buildRandomArray, randomEnumValue } from '../helpers/generator.helper'
 
 type CareProductFactoryOverride = Partial<Prisma.care_productCreateInput>
@@ -24,7 +24,7 @@ const randomRecommendedFor = (): string => {
 
 export const careProductFactory = async (overrides: CareProductFactoryOverride = {}) => {
     // Get random user from repo
-    const user = await getRandomUser()
+    const user = await findRandomUserRepo()
 
     // Build dummy
     const data: Prisma.care_productCreateInput = {

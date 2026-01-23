@@ -1,13 +1,13 @@
 import { prisma } from '../lib/prisma'
 import { Prisma } from '../generated/prisma/client'
 import { faker } from '@faker-js/faker'
-import { getRandomUser } from '../repositories/user.repository'
+import { findRandomUserRepo} from '../repositories/user.repository'
 
 type HistoryFactoryOverride = Partial<Prisma.historyCreateInput>
 
 export const historyFactory = async (overrides: HistoryFactoryOverride = {}) => {
     // Get random user from repo
-    const user = await getRandomUser()
+    const user = await findRandomUserRepo()
     if (!user) {
         throw new Error('History requires an user')
     }

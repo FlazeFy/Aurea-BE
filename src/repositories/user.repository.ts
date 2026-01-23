@@ -10,7 +10,7 @@ export const findUserByIdRepo = async (id: string) => {
     })
 }
 
-export const getRandomUser = async () => {
+export const findRandomUserRepo = async () => {
     const count = await prisma.user.count()
 
     if (count === 0) {
@@ -22,7 +22,7 @@ export const getRandomUser = async () => {
     return prisma.user.findFirst({ skip, select: { id: true },})
 }
 
-export const getRandomUserWithInventory = async () => {
+export const findRandomUserWithInventoryRepo = async () => {
     // Count users that have at least one inventory
     const count = await prisma.user.count({
         where: { inventories: { some: {} } },
@@ -43,7 +43,7 @@ export const getRandomUserWithInventory = async () => {
     })
 }
 
-export const getRandomUserWithInventoryAndUsedSchedule = async () => {
+export const findRandomUserWithInventoryRepoAndUsedSchedule = async () => {
     // Count users that have at least one inventory
     const count = await prisma.user.count({
         where: { inventories: { some: { used_schedules: { some: {} } } } },
