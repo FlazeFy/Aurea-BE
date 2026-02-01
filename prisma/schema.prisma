@@ -150,7 +150,6 @@ model inventory {
   care_product_id String   @db.Char(36)
   qty             Int
   inventory_note  String?  @db.VarChar(255)
-
   // Metadata
   created_at      DateTime @default(now())
   created_by      String   @db.Char(36)
@@ -168,7 +167,6 @@ model used_schedule {
   day_name        DayName
   time            Time
   schedule_note   String? @db.VarChar(255)
-
   // Metadata
   created_at      DateTime @default(now())
 
@@ -181,7 +179,6 @@ model used_schedule {
 model schedule_mark {
   id                String  @id @db.Char(36)
   used_schedule_id  String  @db.Char(36)
-
   // Metadata
   created_at        DateTime @default(now())
 
@@ -206,7 +203,6 @@ model comment {
   id              String   @id @db.Char(36)
   care_product_id String   @db.Char(36)
   comment_body    String   @db.VarChar(500)
-
   // Metadata
   created_by      String   @db.Char(36)
   created_at      DateTime @default(now())
@@ -219,7 +215,6 @@ model comment {
 model like {
   id              String   @id @db.Char(36)
   care_product_id String   @db.Char(36)
-
   // Metadata
   created_by      String   @db.Char(36)
   created_at      DateTime @default(now())

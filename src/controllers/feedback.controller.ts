@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllFeedbackService, hardDeleteFeedbackByIdService } from "../services/feedback.service"
+import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { getAllFeedbackService, hardDeleteFeedbackByIdService, postCreateFeedbackService } from "../services/feedback.service"
 
 export const getAllFeedback = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -18,6 +19,27 @@ export const getAllFeedback = async (req: Request, res: Response, next: NextFunc
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const postCreateFeedback = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Request body
+        const { feedback_rate, feedback_note } = req.body
+
+        // Get user id
+        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+
+        // Service : Create feedback
+        const result = await postCreateFeedbackService(feedback_rate, feedback_note, userId)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(201).json({
+            message: "Feedback sended"
         })
     } catch (error: any) {
         next(error)

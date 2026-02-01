@@ -1,4 +1,4 @@
-import { deleteFeedbackByIdRepo, findFeedbackByIdRepo, findAllFeedbackRepo } from "../repositories/feedback.repository"
+import { deleteFeedbackByIdRepo, findFeedbackByIdRepo, findAllFeedbackRepo, createFeedbackRepo } from "../repositories/feedback.repository"
 
 export const getAllFeedbackService = async (page: number,limit: number) => {
     // Repo : Find all feedback
@@ -21,4 +21,9 @@ export const hardDeleteFeedbackByIdService = async (id: string) => {
     await deleteFeedbackByIdRepo(id)
 
     return feedback
+}
+
+export const postCreateFeedbackService = async (feedback_rate: number, feedback_note: string, userId: string) => {
+    // Repo : Create feedback
+    return await createFeedbackRepo(feedback_rate, feedback_note, userId)
 }

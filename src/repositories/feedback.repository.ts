@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export const findAllFeedbackRepo = async (page: number, limit: number) => {
     const skip = (page - 1) * limit
@@ -27,6 +28,14 @@ export const findAllFeedbackRepo = async (page: number, limit: number) => {
 
 export const findFeedbackByIdRepo = async (id: string) => {
     return prisma.feedback.findUnique({ where: { id } })
+}
+
+export const createFeedbackRepo = async (feedback_rate: number, feedback_note: string, userId: string) => {
+    return prisma.feedback.create({
+        data: {
+            id: uuidv4(), feedback_rate, feedback_note, created_at: new Date(), created_by: userId,
+        },
+    })
 }
 
 export const deleteFeedbackByIdRepo = async (id: string) => {
