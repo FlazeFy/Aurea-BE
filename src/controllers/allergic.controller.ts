@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { extractUserFromAuthHeader } from "../helpers/auth.helper"
 import { getAllAllergicService, hardDeleteAllergicByIdService } from "../services/allergic.service"
 
-export const getAllAllergic = async (req: Request, res: Response) => {
+export const getAllAllergic = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -13,11 +13,7 @@ export const getAllAllergic = async (req: Request, res: Response) => {
 
         // Service : Get all allergic
         const result = await getAllAllergicService(page, limit, userId)
-        if (!result) {
-            return res.status(404).json({
-                message: "Allergic not found"
-            })
-        }
+        if (!result) throw { code: 404, message: "Allergic not found" }
 
         // Success response
         res.status(200).json({
@@ -28,13 +24,11 @@ export const getAllAllergic = async (req: Request, res: Response) => {
             },
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }
 
-export const hardDeleteAllergicById = async (req: Request, res: Response) => {
+export const hardDeleteAllergicById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const { id } = req.params
@@ -42,11 +36,7 @@ export const hardDeleteAllergicById = async (req: Request, res: Response) => {
 
         // Service : Hard delete allergic by id
         const result = await hardDeleteAllergicByIdService(id, created_by)
-        if (!result) {
-            return res.status(404).json({
-                message: "Allergic not found"
-            })
-        }
+        if (!result) throw { code: 404, message: "Allergic not found" }
 
         // Success response
         res.status(200).json({
@@ -54,8 +44,6 @@ export const hardDeleteAllergicById = async (req: Request, res: Response) => {
             data: result,
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }

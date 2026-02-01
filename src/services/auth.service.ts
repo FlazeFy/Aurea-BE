@@ -55,7 +55,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     const admin = await findAdminByIdRepo(id)
     if (admin) {
         // Generate auth token
-        const token = createToken({ id: id, role: "admin" })
+        const token = createToken({ id: id, role: "admin" }, "7d")
         return {
             name: admin.username,
             email: admin.email,
@@ -68,7 +68,7 @@ export const refreshTokenService = async (refreshToken: string) => {
     const user = await findUserByIdRepo(id)
     if (user) {
         // Generate auth token
-        const token = createToken({ id: id, role: "user" })
+        const token = createToken({ id: id, role: "user" }, "7d")
         return {
             name: user.username,
             email: user.email,

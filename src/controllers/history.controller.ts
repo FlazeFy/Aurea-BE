@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { extractUserFromAuthHeader } from "../helpers/auth.helper"
 import { getAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
 
-export const getAllHistory = async (req: Request, res: Response) => {
+export const getAllHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -13,11 +13,7 @@ export const getAllHistory = async (req: Request, res: Response) => {
 
         // Service : Get all history
         const result = await getAllHistoryService(page, limit, role === "user" ? userId : null)
-        if (!result) {
-            return res.status(404).json({
-                message: "History not found"
-            })
-        }
+        if (!result) throw { code: 404, message: "History not found" }
 
         // Success response
         res.status(200).json({
@@ -28,13 +24,11 @@ export const getAllHistory = async (req: Request, res: Response) => {
             },
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }
 
-export const hardDeleteHistoryById = async (req: Request, res: Response) => {
+export const hardDeleteHistoryById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const { id } = req.params
@@ -44,11 +38,7 @@ export const hardDeleteHistoryById = async (req: Request, res: Response) => {
 
         // Service : Hard delete history by id
         const result = await hardDeleteHistoryByIdService(id, userId)
-        if (!result) {
-            return res.status(404).json({
-                message: "History not found"
-            })
-        }
+        if (!result) throw { code: 404, message: "History not found" }
 
         // Success response
         res.status(200).json({
@@ -56,8 +46,6 @@ export const hardDeleteHistoryById = async (req: Request, res: Response) => {
             data: result,
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }

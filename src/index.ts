@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application, Request, Response, NextFunction } from 'express'
 import cors from "cors"
 import dotenv from "dotenv"
 
@@ -10,6 +10,7 @@ import allergicRouter from "./routers/allergic.router"
 import usedScheduleRouter from "./routers/used_schedule.router"
 import scheduleMarkRouter from "./routers/schedule_mark.router"
 import authRouter from './routers/auth.router'
+import { auditError } from './helpers/audit.helper'
 
 // Load env
 dotenv.config()
@@ -34,6 +35,23 @@ app.use("/api/dictionaries", dictionaryRouter)
 app.use("/api/allergics", allergicRouter)
 app.use("/api/used_schedule", usedScheduleRouter)
 app.use("/api/schedule_mark", scheduleMarkRouter)
+
+app.use(( err: any, req: Request, res: Response, next: NextFunction) => {
+    const statusCode = err.code || err.status || 500
+
+    if (statusCode === 500) {
+        auditError(err, req)
+
+        return res.status(500).json({
+            message: "Something went wrong",
+        })
+    }
+
+    return res.status(statusCode).json({
+        message: err.message,
+    })
+})
+
 
 // Start Server
 app.listen(PORT, () => {

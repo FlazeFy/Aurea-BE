@@ -1,21 +1,17 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { extractUserFromAuthHeader } from "../helpers/auth.helper"
 import { getAdminByIdService } from "../services/admin.service"
 import { loginService, refreshTokenService } from "../services/auth.service"
 import { getUserByIdService } from "../services/user.service"
 
-export const postLogin = async (req: Request, res: Response) => {
+export const postLogin = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Body
         const { email, password } = req.body
 
         // Service : Login
         const result = await loginService(email, password)
-        if (!result) {
-            return res.status(401).json({
-                message: "Invalid email or password",
-            })
-        }
+        if (!result) throw { code: 401, message: "Invalid email or password" }
 
         // Success response
         return res.status(200).json({
@@ -23,31 +19,21 @@ export const postLogin = async (req: Request, res: Response) => {
             data: result,
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }
 
-export const getRefreshToken = async (req: Request, res: Response) => {
+export const getRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Auth header
         const authHeader = req.headers.authorization
         const refreshToken = authHeader?.split(" ")[1]
 
-        if (!refreshToken) {
-            return res.status(400).json({
-                message: "Refresh token required",
-            })
-        }
+        if (!refreshToken) throw { code: 400, message: "Refresh token required" }
 
         // Service : Refresh token
         const result = await refreshTokenService(refreshToken)
-        if (!result) {
-            return res.status(401).json({
-                message: "Invalid refresh token",
-            })
-        }
+        if (!result) throw { code: 401, message: "Invalid refresh token" }
 
         // Success response
         return res.status(200).json({
@@ -55,13 +41,11 @@ export const getRefreshToken = async (req: Request, res: Response) => {
             data: result,
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }
 
-export const getMyProfile = async (req: Request, res: Response) => {
+export const getMyProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get user id
         const { userId, role } = extractUserFromAuthHeader(req.headers.authorization)
@@ -96,8 +80,6 @@ export const getMyProfile = async (req: Request, res: Response) => {
             data: finalRes
         })
     } catch (error: any) {
-        return res.status(500).json({
-            message: "Something went wrong",
-        })
+        next(error)
     }
 }
