@@ -14,7 +14,7 @@ import { auditError } from './helpers/audit.helper'
 
 // Load env
 dotenv.config()
-const PORT: string = process.env.PORT || "5555"
+const PORT = process.env.PORT
 
 // Initialize express
 const app: Application = express()

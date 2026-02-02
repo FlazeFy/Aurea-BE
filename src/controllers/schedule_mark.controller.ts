@@ -31,7 +31,7 @@ export const getAllScheduleMark = async (req: Request, res: Response, next: Next
 export const hardDeleteScheduleMarkById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
         const created_by = null // for now
 
         // Service : Hard delete schedule mark by id

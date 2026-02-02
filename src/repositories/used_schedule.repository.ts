@@ -29,6 +29,25 @@ export const findUsedScheduleByIdRepo = async (id: string) => {
     })
 }
 
+export const findUsedScheduleByUserIdRepo = async (userId: string) => {
+    return prisma.used_schedule.findMany({ 
+        where: { 
+            inventory: { created_by: userId } 
+        },
+        select: {
+            day_name: true, time: true, inventory: {
+                select: {
+                    care_product: {
+                        select: {
+                            product_name: true, product_type: true, product_category: true 
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
 export const findUsedScheduleByInventoryIdDayTime = async (inventory_id: string, day_name: DayName, time: Time) => {
     return prisma.used_schedule.findMany({
         where: { inventory_id, day_name, time }

@@ -5,7 +5,7 @@ import { hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService } from
 export const hardDeleteUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
         const created_by = null // for now
 
         // Service : Hard delete used schedule by id

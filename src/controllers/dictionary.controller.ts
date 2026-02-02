@@ -27,7 +27,7 @@ export const getAllDictionary = async (req: Request, res: Response, next: NextFu
 export const hardDeleteDictionaryByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
 
         // Service : Hard delete dictionary by id
         const result = await hardDeleteDictionaryByIdService(id)

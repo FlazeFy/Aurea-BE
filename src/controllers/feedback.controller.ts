@@ -49,7 +49,7 @@ export const postCreateFeedback = async (req: Request, res: Response, next: Next
 export const hardDeleteFeedbackById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
 
         // Service : Hard delete feedback by id
         const result = await hardDeleteFeedbackByIdService(id)

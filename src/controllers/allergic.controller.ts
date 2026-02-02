@@ -52,7 +52,7 @@ export const postCreateAllergic = async (req: Request, res: Response, next: Next
 export const hardDeleteAllergicById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
         const created_by = null // for now
 
         // Service : Hard delete allergic by id

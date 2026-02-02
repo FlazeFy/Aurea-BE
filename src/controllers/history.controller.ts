@@ -31,7 +31,7 @@ export const getAllHistory = async (req: Request, res: Response, next: NextFunct
 export const hardDeleteHistoryById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
-        const { id } = req.params
+        const id = req.params.id as string
 
         // Get user id
         const { userId } = extractUserFromAuthHeader(req.headers.authorization)
