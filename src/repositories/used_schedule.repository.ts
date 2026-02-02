@@ -48,11 +48,34 @@ export const findUsedScheduleByUserIdRepo = async (userId: string) => {
     })
 }
 
-export const findUsedScheduleByInventoryIdDayTime = async (inventory_id: string, day_name: DayName, time: Time) => {
+export const findUsedScheduleByInventoryIdDayTimeRepo = async (inventory_id: string, day_name: DayName, time: Time) => {
     return prisma.used_schedule.findMany({
         where: { inventory_id, day_name, time }
     })
 }
+
+export const findUsedScheduleByDayRepo = async (day_name: DayName, userId: string) => {
+    const schedules = await prisma.used_schedule.findMany({
+        where: { 
+            day_name,
+            inventory: { created_by: userId }
+        },
+        select: {
+            time: true,
+            inventory: {
+                select: {
+                    care_product: {
+                        select: { id: true, product_name: true, product_type: true, product_category: true }
+                    }
+                }
+            }
+        }
+    })
+  
+    // Custom sort order
+    const order = ["morning", "afternoon", "night"]
+    return schedules.sort((a, b) => order.indexOf(a.time) - order.indexOf(b.time))
+} 
 
 export const hardDeleteUsedScheduleByIdRepo = async (id: string, created_by: string | null) => {
     return prisma.used_schedule.deleteMany({

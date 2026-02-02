@@ -1,9 +1,20 @@
 import { DayName, Time } from "../generated/prisma/enums"
 import { sendEmail } from "../helpers/mailer.helper"
 import { findInventoryByIdRepo } from "../repositories/inventory.repository"
-import { createUsedScheduleRepo, findUsedScheduleByIdRepo, findUsedScheduleByInventoryIdDayTime, findUsedScheduleByUserIdRepo, hardDeleteUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
+import { createUsedScheduleRepo, findUsedScheduleByDayRepo, findUsedScheduleByIdRepo, findUsedScheduleByInventoryIdDayTimeRepo, findUsedScheduleByUserIdRepo, hardDeleteUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
 import { findUserByIdRepo } from "../repositories/user.repository"
 import { announcementEmailTemplate } from "../templates/announcement.template"
+
+export const getUsedScheduleByDayService = async (day_name: string, userId: string) => {
+    const dayEnum = DayName[day_name as keyof typeof DayName]    
+    if (!dayEnum) throw { code: 400, message: 'Invalid day_name' }
+
+    // Repo : Find used schedule by day
+    const res = await findUsedScheduleByDayRepo(dayEnum, userId)
+    if (!res || res.length === 0) return null
+
+    return res
+}
 
 export const hardDeleteUsedScheduleByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find used schedule by id
@@ -28,7 +39,7 @@ export const postCreateUsedScheduleService = async (inventory_id: string, day_na
     if (!timeEnum) throw { code: 400, message: 'Invalid time' }
 
     // Repo : Check if inventory is still not used at the request day & time
-    const isUsed = await findUsedScheduleByInventoryIdDayTime(inventory_id, dayEnum, timeEnum)
+    const isUsed = await findUsedScheduleByInventoryIdDayTimeRepo(inventory_id, dayEnum, timeEnum)
     if (isUsed && isUsed.length > 0) throw { code: 409, message: 'Inventory already being used at this specific time' }
 
     // Repo : Find user for email broadcast
