@@ -61,11 +61,12 @@ export const findUsedScheduleByDayRepo = async (day_name: DayName, userId: strin
             inventory: { created_by: userId }
         },
         select: {
-            time: true,
+            id: true, time: true,
             inventory: {
                 select: {
+                    id: true,
                     care_product: {
-                        select: { id: true, product_name: true, product_type: true, product_category: true }
+                        select: { product_name: true, product_type: true, product_category: true }
                     }
                 }
             }
@@ -94,5 +95,12 @@ export const createUsedScheduleRepo = async (inventory_id: string, day_name: Day
         data: {
             id: uuidv4(), inventory_id, day_name, time, schedule_note
         }
+    })
+}
+
+export const updateUsedScheduleByIdRepo = async (id: string, inventory_id: string, day_name: DayName, time: Time, schedule_note: string) => {
+    return prisma.used_schedule.update({
+        where: { id },
+        data: { inventory_id, day_name, time, schedule_note }
     })
 }

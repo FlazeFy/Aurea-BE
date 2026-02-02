@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromAuthHeader } from "../helpers/auth.helper"
-import { getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService } from "../services/used_schedule.service"
+import { getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService, putUpdateUsedScheduleByIdService } from "../services/used_schedule.service"
 
 export const hardDeleteUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -59,6 +59,30 @@ export const postCreateUsedSchedule = async (req: Request, res: Response, next: 
         // Success response
         return res.status(201).json({
             message: "Used schedule created"
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const putUpdateUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const id = req.params.id as string
+
+        // Request body
+        const { inventory_id, day_name, time, schedule_note } = req.body
+
+        // Get user id
+        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+
+        // Service : Create used schedule
+        const result = await putUpdateUsedScheduleByIdService(id, inventory_id, day_name, time, schedule_note, userId)
+        if (!result) throw { code: 404, message: "Used schedule not found" }
+
+        // Success response
+        return res.status(200).json({
+            message: "Used schedule updated"
         })
     } catch (error: any) {
         next(error)
