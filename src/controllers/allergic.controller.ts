@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromAuthHeader } from "../helpers/auth.helper"
-import { getAllAllergicService, hardDeleteAllergicByIdService } from "../services/allergic.service"
+import { getAllAllergicService, hardDeleteAllergicByIdService, postCreateAllergicService } from "../services/allergic.service"
 
 export const getAllAllergic = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +22,27 @@ export const getAllAllergic = async (req: Request, res: Response, next: NextFunc
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const postCreateAllergic = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Request body
+        const { allergic_context, allergic_desc } = req.body
+
+        // Get user id
+        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+
+        // Service : Create feedback
+        const result = await postCreateAllergicService(allergic_context, allergic_desc, userId)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(201).json({
+            message: "Allergic created"
         })
     } catch (error: any) {
         next(error)

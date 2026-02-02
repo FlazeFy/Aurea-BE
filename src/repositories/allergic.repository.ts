@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export const findAllergicByIdRepo = async (id: string) => {
     return prisma.allergic.findUnique({ where: { id } })
@@ -27,5 +28,13 @@ export const findAllAllergicRepo = async (page: number, limit: number, userId: s
 export const hardDeleteAllergicByIdRepo = async (id: string, created_by: string | null) => {
     return prisma.allergic.deleteMany({
         where: { id, ...(created_by !== null && { created_by })},
+    })
+}
+
+export const createAllergicRepo = async (allergic_context: string, allergic_desc: string, userId: string) => {
+    return prisma.allergic.create({
+        data: {
+            id: uuidv4(), allergic_context, allergic_desc, created_at: new Date(), created_by: userId,
+        },
     })
 }

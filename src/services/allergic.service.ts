@@ -1,4 +1,4 @@
-import { findAllAllergicRepo, findAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositories/allergic.repository"
+import { createAllergicRepo, findAllAllergicRepo, findAllergicByIdRepo, hardDeleteAllergicByIdRepo } from "../repositories/allergic.repository"
 
 export const getAllAllergicService = async (page: number, limit: number, userId: string | null) => {
     // Repo : Find all allergic
@@ -21,4 +21,9 @@ export const hardDeleteAllergicByIdService = async (id: string, created_by: stri
     await hardDeleteAllergicByIdRepo(id, created_by)
 
     return allergic
+}
+
+export const postCreateAllergicService = async (allergic_context: string, allergic_desc: string, userId: string) => {
+    // Repo : Create feedback
+    return await createAllergicRepo(allergic_context, allergic_desc, userId)
 }
