@@ -15,6 +15,12 @@ export const findRandomInventoryByUserRepo = async (userId: string) => {
     })
 }
 
+export const findInventoryByIdRepo = async (id: string, created_by: string) => {
+    return prisma.inventory.findUnique({ 
+        where: { id, created_by },
+    })
+}
+
 export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: string) => {
     const count = await prisma.inventory.count({
         where: { created_by: userId, used_schedules: { some: {} } },
