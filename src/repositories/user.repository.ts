@@ -12,10 +12,7 @@ export const findUserByIdRepo = async (id: string) => {
 
 export const findRandomUserRepo = async () => {
     const count = await prisma.user.count()
-
-    if (count === 0) {
-        throw new Error('No users found. Seed users first')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 
@@ -27,10 +24,7 @@ export const findRandomUserWithInventoryRepo = async () => {
     const count = await prisma.user.count({
         where: { inventories: { some: {} } },
     })
-
-    if (count === 0) {
-        throw new Error('No users with inventory found. Seed care products & inventory first')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 
@@ -48,10 +42,7 @@ export const findRandomUserWithInventoryRepoAndUsedSchedule = async () => {
     const count = await prisma.user.count({
         where: { inventories: { some: { used_schedules: { some: {} } } } },
     })
-
-    if (count === 0) {
-        throw new Error('No users with inventory and schedule found. Seed care products & inventory first')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 

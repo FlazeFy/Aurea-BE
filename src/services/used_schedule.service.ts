@@ -3,9 +3,7 @@ import { findUsedScheduleByIdRepo, hardDeleteUsedScheduleByIdRepo } from "../rep
 export const hardDeleteUsedScheduleByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find used schedule by id
     const used_schedule = await findUsedScheduleByIdRepo(id)
-    if (!used_schedule) {
-        return null
-    }
+    if (!used_schedule) return null
 
     // Repo : Delete used schedule by id
     await hardDeleteUsedScheduleByIdRepo(id, created_by)

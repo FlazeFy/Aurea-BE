@@ -4,10 +4,7 @@ export const findRandomUsedScheduleByInventoryRepo = async (inventoryId: string)
     const count = await prisma.used_schedule.count({
         where: { inventory_id: inventoryId },
     })
-
-    if (count === 0) {
-        throw new Error('No used schedules found for this inventory')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 
@@ -19,7 +16,15 @@ export const findRandomUsedScheduleByInventoryRepo = async (inventoryId: string)
 }
 
 export const findUsedScheduleByIdRepo = async (id: string) => {
-    return prisma.used_schedule.findUnique({ where: { id } })
+    return prisma.used_schedule.findUnique({ 
+        where: { id },
+        select: {
+            id: true,
+            inventory: {
+                select: { id: true, created_by: true }
+            }
+        } 
+    })
 }
 
 export const hardDeleteUsedScheduleByIdRepo = async (id: string, created_by: string | null) => {

@@ -2,10 +2,7 @@ import { prisma } from '../lib/prisma'
 
 export const findRandomCareProductRepo = async () => {
     const count = await prisma.care_product.count()
-
-    if (count === 0) {
-        throw new Error('No care products found. Seed care products first.')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 

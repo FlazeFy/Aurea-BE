@@ -13,6 +13,18 @@ const GMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@gmail\.com$/
 
 export const validateBodyMiddleware = (schema: ValidatorSchema) => {
     return (req: Request, res: Response, next: NextFunction) => {
+        if (!req.body || typeof req.body !== "object" || Object.keys(req.body).length === 0) {
+            const hasRequiredField = Object.values(schema).some(rule => rule.required)
+
+            if (hasRequiredField) {
+                return res.status(422).json({
+                    message: "Validation error",
+                    data: {
+                        body: "Request body is required",
+                    },
+                })
+            }
+        }        
         const errors: Record<string, string> = {}
 
         for (const field in schema) {

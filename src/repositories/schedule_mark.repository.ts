@@ -1,8 +1,8 @@
 import { prisma } from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export const findAllScheduleMarkRepo = async (page: number, limit: number, userId: string | null) => {
     const skip = (page - 1) * limit
-  
     const whereClause = userId ? { used_schedule: { inventory: { created_by: userId } } } : undefined
   
     const [data, total] = await Promise.all([
@@ -52,4 +52,12 @@ export const hardDeleteScheduleMarkByIdRepo = async (id: string, created_by: str
             })
         }
     })      
+}
+
+export const createScheduleMarkRepo = async (used_schedule_id: string) => {
+    return prisma.schedule_mark.create({
+        data: {
+            id: uuidv4(), used_schedule_id, created_at: new Date(),
+        },
+    })
 }

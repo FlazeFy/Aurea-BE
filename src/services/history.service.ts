@@ -3,9 +3,7 @@ import { findAllHistoryRepo, findHistoryByIdRepo, hardDeleteHistoryByIdRepo } fr
 export const getAllHistoryService = async (page: number, limit: number, userId: string | null) => {
     // Repo : Find all allergic
     const res = await findAllHistoryRepo(page, limit, userId)
-    if (!res || res.data.length === 0) {
-        return null
-    }
+    if (!res || res.data.length === 0) return null
 
     return res
 }
@@ -13,9 +11,7 @@ export const getAllHistoryService = async (page: number, limit: number, userId: 
 export const hardDeleteHistoryByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find history by id
     const history = await findHistoryByIdRepo(id)
-    if (!history) {
-        return null
-    }
+    if (!history) return null
 
     // Repo : Delete history by id
     await hardDeleteHistoryByIdRepo(id, created_by)

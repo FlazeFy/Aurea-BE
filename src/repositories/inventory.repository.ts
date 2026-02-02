@@ -4,10 +4,7 @@ export const findRandomInventoryByUserRepo = async (userId: string) => {
     const count = await prisma.inventory.count({
         where: { created_by: userId },
     })
-
-    if (count === 0) {
-        throw new Error('No inventories found for this user')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 
@@ -22,10 +19,7 @@ export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: stri
     const count = await prisma.inventory.count({
         where: { created_by: userId, used_schedules: { some: {} } },
     })
-
-    if (count === 0) {
-        throw new Error('No inventories found for this user')
-    }
+    if (count === 0) return null
 
     const skip = Math.floor(Math.random() * count)
 
