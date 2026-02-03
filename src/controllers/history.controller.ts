@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
 
 export const getAllHistory = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export const getAllHistory = async (req: Request, res: Response, next: NextFunct
         const limit = Number(req.query.limit) || 14
 
         // Get user id
-        const { userId, role } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId, role } = extractUserFromLocals(res)
 
         // Service : Get all history
         const result = await getAllHistoryService(page, limit, role === "user" ? userId : null)
@@ -34,7 +34,7 @@ export const hardDeleteHistoryById = async (req: Request, res: Response, next: N
         const id = req.params.id as string
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Hard delete history by id
         const result = await hardDeleteHistoryByIdService(id, userId)

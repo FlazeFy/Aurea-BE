@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAdminByIdService } from "../services/admin.service"
 import { loginService, refreshTokenService } from "../services/auth.service"
 import { getUserByIdService } from "../services/user.service"
@@ -48,7 +48,7 @@ export const getRefreshToken = async (req: Request, res: Response, next: NextFun
 export const getMyProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get user id
-        const { userId, role } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId, role } = extractUserFromLocals(res)
         let result 
 
         switch (role) {

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAllFeedbackService, hardDeleteFeedbackByIdService, postCreateFeedbackService } from "../services/feedback.service"
 
 export const getAllFeedback = async (req: Request, res: Response, next: NextFunction) => {
@@ -31,7 +31,7 @@ export const postCreateFeedback = async (req: Request, res: Response, next: Next
         const { feedback_rate, feedback_note } = req.body
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Create feedback
         const result = await postCreateFeedbackService(feedback_rate, feedback_note, userId)

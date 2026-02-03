@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAllAllergicService, hardDeleteAllergicByIdService, postCreateAllergicService } from "../services/allergic.service"
 
 export const getAllAllergic = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export const getAllAllergic = async (req: Request, res: Response, next: NextFunc
         const limit = Number(req.query.limit) || 14
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Get all allergic
         const result = await getAllAllergicService(page, limit, userId)
@@ -34,7 +34,7 @@ export const postCreateAllergic = async (req: Request, res: Response, next: Next
         const { allergic_context, allergic_desc } = req.body
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Create feedback
         const result = await postCreateAllergicService(allergic_context, allergic_desc, userId)

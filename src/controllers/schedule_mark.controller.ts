@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAllScheduleMarkService, hardDeleteScheduleMarkByIdService, postCreateScheduleMarkService } from "../services/schedule_mark.service"
 
 export const getAllScheduleMark = async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export const getAllScheduleMark = async (req: Request, res: Response, next: Next
         const limit = Number(req.query.limit) || 14
 
         // Get user id
-        const { userId, role } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId, role } = extractUserFromLocals(res)
 
         // Service : Get all schedule mark
         const result = await getAllScheduleMarkService(page, limit, role === "user" ? userId : null)
@@ -54,7 +54,7 @@ export const postCreateScheduleMark = async (req: Request, res: Response, next: 
         const { used_schedule_id } = req.body
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Create used schedule
         const result = await postCreateScheduleMarkService(used_schedule_id, userId)

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { extractUserFromAuthHeader } from "../helpers/auth.helper"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService, putUpdateUsedScheduleByIdService } from "../services/used_schedule.service"
 
 export const hardDeleteUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,7 +28,7 @@ export const getUsedScheduleByDay = async (req: Request, res: Response, next: Ne
         const day = req.params.day as string
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Get used schedule by day
         const result = await getUsedScheduleByDayService(day, userId)
@@ -50,7 +50,7 @@ export const postCreateUsedSchedule = async (req: Request, res: Response, next: 
         const { inventory_id, day_name, time, schedule_note } = req.body
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Create used schedule
         const result = await postCreateUsedScheduleService(inventory_id, day_name, time, schedule_note, userId)
@@ -74,7 +74,7 @@ export const putUpdateUsedScheduleById = async (req: Request, res: Response, nex
         const { inventory_id, day_name, time, schedule_note } = req.body
 
         // Get user id
-        const { userId } = extractUserFromAuthHeader(req.headers.authorization)
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Create used schedule
         const result = await putUpdateUsedScheduleByIdService(id, inventory_id, day_name, time, schedule_note, userId)
