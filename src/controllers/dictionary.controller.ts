@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllDictionaryService, hardDeleteDictionaryByIdService } from "../services/dictionary.service"
+import { getAllDictionaryService, hardDeleteDictionaryByIdService, postCreateDictionaryService } from "../services/dictionary.service"
 
 export const getAllDictionary = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -18,6 +18,24 @@ export const getAllDictionary = async (req: Request, res: Response, next: NextFu
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const postCreateDictionaryController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Request body
+        const { dictionary_name, dictionary_type } = req.body
+
+        // Service : Create dictionary
+        const result = await postCreateDictionaryService(dictionary_name, dictionary_type)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(201).json({
+            message: "Dictionary created"
         })
     } catch (error: any) {
         next(error)

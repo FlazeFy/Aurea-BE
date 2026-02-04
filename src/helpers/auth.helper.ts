@@ -1,5 +1,4 @@
 import { genSalt, hash } from "bcrypt"
-import jwt from "jsonwebtoken"
 
 interface JwtPayload {
     id: string
