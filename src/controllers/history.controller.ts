@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
+import { getAllHistoryService, hardDeleteAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
 
 export const getAllHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -42,8 +42,25 @@ export const hardDeleteHistoryById = async (req: Request, res: Response, next: N
 
         // Success response
         res.status(200).json({
-            message: "Delete history successful",
-            data: result,
+            message: "Delete history successful"
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const hardDeleteAllHistory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Hard delete history by id
+        const result = await hardDeleteAllHistoryService(userId)
+        if (!result) throw { code: 404, message: "History not found" }
+
+        // Success response
+        res.status(200).json({
+            message: "Delete all history successful"
         })
     } catch (error: any) {
         next(error)

@@ -8,6 +8,11 @@ export const getAllHistoryService = async (page: number, limit: number, userId: 
     return res
 }
 
+export const hardDeleteAllHistoryService = async (created_by: string) => {
+    // Repo : Delete all history 
+    return await hardDeleteHistoryByIdRepo(null, created_by)
+}
+
 export const hardDeleteHistoryByIdService = async (id: string, created_by: string | null) => {
     // Repo : Find history by id
     const history = await findHistoryByIdRepo(id)
