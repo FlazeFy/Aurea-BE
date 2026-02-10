@@ -6,11 +6,9 @@ export const findAllCareProductRepo = async (page: number, limit: number, search
 
     if (search) {
         whereClause.OR = [
-            { product_name: { contains: search, mode: "insensitive" } },
-            { brand: { contains: search, mode: "insensitive" } },
-            { ingredients: { contains: search, mode: "insensitive" } },
-            { key_ingredients: { contains: search, mode: "insensitive" } },
-            { recommended_for: { contains: search, mode: "insensitive" } }
+            { product_name: { contains: search } },
+            { brand: { contains: search } },
+            { recommended_for: { contains: search } }
         ]
     }
     if (product_category) whereClause.product_category = product_category
