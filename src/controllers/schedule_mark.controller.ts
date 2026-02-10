@@ -32,10 +32,12 @@ export const hardDeleteScheduleMarkById = async (req: Request, res: Response, ne
     try {
         // Param
         const id = req.params.id as string
-        const created_by = null // for now
+
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Hard delete schedule mark by id
-        const result = await hardDeleteScheduleMarkByIdService(id, created_by)
+        const result = await hardDeleteScheduleMarkByIdService(id, userId)
         if (!result) throw { code: 404, message: "Schedule mark not found" }
 
         // Success response

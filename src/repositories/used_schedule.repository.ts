@@ -120,6 +120,37 @@ export const hardDeleteUsedScheduleByIdRepo = async (id: string, created_by: str
     })
 }
 
+export const hardDeleteUsedScheduleByInventoryIdRepo = async (inventoryId: string, userId: string) => {
+    return prisma.$transaction(async (tx) => {
+        // Get used schedule ids
+        const schedules = await tx.used_schedule.findMany({
+            where: {
+                inventory: {
+                    id: inventoryId,
+                    created_by: userId
+                }
+            },
+            select: { id: true }
+        })
+    
+        const scheduleIds = schedules.map(dt => dt.id)
+    
+        // Delete schedule mark (child)
+        await tx.schedule_mark.deleteMany({
+            where: {
+                used_schedule_id: { in: scheduleIds }
+            }
+        })
+
+        // Delete used schedule (parent)
+        await tx.used_schedule.deleteMany({
+            where: {
+                id: { in: scheduleIds }
+            }
+        })
+    })
+} 
+
 export const createUsedScheduleRepo = async (inventory_id: string, day_name: DayName, time: Time, schedule_note: string) => {
     return prisma.used_schedule.create({
         data: {

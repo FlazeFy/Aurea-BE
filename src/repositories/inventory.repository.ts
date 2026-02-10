@@ -30,6 +30,7 @@ export const findAllInventoryRepo = async (page: number, limit: number, search: 
                 key_ingredients: true, recommended_for: true, suitable_skin: true, created_at: true,
                 inventories: {
                     select: {
+                        id: true,
                         inventory_note: true,
                         _count: {
                             select: {
@@ -90,5 +91,11 @@ export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: stri
         where: { created_by: userId, used_schedules: { some: {} } },
         skip,
         select: { id: true },
+    })
+}
+
+export const hardDeleteInventoryByIdRepo = async (id: string, created_by: string) => {
+    return prisma.inventory.delete({
+        where: { id, created_by }
     })
 }

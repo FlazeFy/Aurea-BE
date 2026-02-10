@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllInventoryService } from "../services/inventory.service"
+import { getAllInventoryService, hardDeleteInventoryByIdService } from "../services/inventory.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getAllInventory = async (req: Request, res: Response, next: NextFunction) => {
@@ -25,6 +25,28 @@ export const getAllInventory = async (req: Request, res: Response, next: NextFun
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const hardDeleteInventoryById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const id = req.params.id as string
+
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Hard delete inventory by id
+        const result = await hardDeleteInventoryByIdService(id, userId)
+        if (!result) throw { code: 404, message: "Inventory not found" }
+
+        // Success response
+        res.status(200).json({
+            message: "Delete inventory successful",
+            data: result,
         })
     } catch (error: any) {
         next(error)
