@@ -1,7 +1,7 @@
 import { DayName, Time } from "../generated/prisma/enums"
 import { sendEmail } from "../helpers/mailer.helper"
 import { findInventoryByIdRepo } from "../repositories/inventory.repository"
-import { createUsedScheduleRepo, findUsedScheduleByDayRepo, findUsedScheduleByIdRepo, findUsedScheduleByInventoryIdDayTimeRepo, findUsedScheduleByUserIdRepo, hardDeleteUsedScheduleByIdRepo, updateUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
+import { createUsedScheduleRepo, findAllUsedScheduleRepo, findUsedScheduleByDayRepo, findUsedScheduleByIdRepo, findUsedScheduleByInventoryIdDayTimeRepo, findUsedScheduleByUserIdRepo, hardDeleteUsedScheduleByIdRepo, updateUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
 import { findUserByIdRepo } from "../repositories/user.repository"
 import { announcementEmailTemplate } from "../templates/announcement.template"
 
@@ -11,6 +11,14 @@ export const getUsedScheduleByDayService = async (day_name: string, userId: stri
 
     // Repo : Find used schedule by day
     const res = await findUsedScheduleByDayRepo(dayEnum, userId)
+    if (!res || res.length === 0) return null
+
+    return res
+}
+
+export const getAllUsedScheduleService = async (userId: string) => {
+    // Repo : Find all used schedule
+    const res = await findAllUsedScheduleRepo(userId)
     if (!res || res.length === 0) return null
 
     return res

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService, putUpdateUsedScheduleByIdService } from "../services/used_schedule.service"
+import { getAllUsedScheduleService, getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService, putUpdateUsedScheduleByIdService } from "../services/used_schedule.service"
 
 export const hardDeleteUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -24,7 +24,7 @@ export const hardDeleteUsedScheduleById = async (req: Request, res: Response, ne
 
 export const getUsedScheduleByDay = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Request body
+        // Params
         const day = req.params.day as string
 
         // Get user id
@@ -32,6 +32,25 @@ export const getUsedScheduleByDay = async (req: Request, res: Response, next: Ne
 
         // Service : Get used schedule by day
         const result = await getUsedScheduleByDayService(day, userId)
+        if (!result) throw { code: 404, message: "Used schedule not found" }
+
+        // Success response
+        return res.status(200).json({
+            message: "Get used schedule successful",
+            data: result
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const getAllUsedSchedule = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Get all used schedule
+        const result = await getAllUsedScheduleService(userId)
         if (!result) throw { code: 404, message: "Used schedule not found" }
 
         // Success response

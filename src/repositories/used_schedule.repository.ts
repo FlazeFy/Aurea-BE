@@ -54,6 +54,36 @@ export const findUsedScheduleByInventoryIdDayTimeRepo = async (inventory_id: str
     })
 }
 
+export const findAllUsedScheduleRepo = async (userId: string) => {
+    const schedules = await prisma.used_schedule.findMany({
+        where: { 
+            inventory: { created_by: userId }
+        },
+        select: {
+            id: true, time: true, day_name: true,
+            inventory: {
+                select: {
+                    id: true,
+                    care_product: {
+                        select: { product_name: true, product_type: true, product_category: true }
+                    }
+                }
+            }
+        }
+    })
+  
+    // Custom sort order
+    const dayOrder = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+    const timeOrder = ["morning", "afternoon", "night"]
+
+    return schedules.sort((a, b) => {
+        const dayDiff = dayOrder.indexOf(a.day_name) - dayOrder.indexOf(b.day_name)
+        if (dayDiff !== 0) return dayDiff
+
+        return timeOrder.indexOf(a.time) - timeOrder.indexOf(b.time)
+    })
+} 
+
 export const findUsedScheduleByDayRepo = async (day_name: DayName, userId: string) => {
     const schedules = await prisma.used_schedule.findMany({
         where: { 
