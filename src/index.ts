@@ -10,6 +10,7 @@ import allergicRouter from "./routers/allergic.router"
 import usedScheduleRouter from "./routers/used_schedule.router"
 import scheduleMarkRouter from "./routers/schedule_mark.router"
 import authRouter from './routers/auth.router'
+import careProductRouter from './routers/care_product.router'
 import { auditError } from './helpers/audit.helper'
 
 // Load env
@@ -35,6 +36,7 @@ app.use("/api/dictionaries", dictionaryRouter)
 app.use("/api/allergics", allergicRouter)
 app.use("/api/used_schedule", usedScheduleRouter)
 app.use("/api/schedule_mark", scheduleMarkRouter)
+app.use("/api/care_products", careProductRouter)
 
 app.use(( err: any, req: Request, res: Response, next: NextFunction) => {
     const statusCode = err.code || err.status || 500

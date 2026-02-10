@@ -26,7 +26,7 @@ export const findAllHistoryRepo = async (page: number, limit: number, userId: st
     return { data, total }
 }
 
-export const hardDeleteHistoryByIdRepo = async (id: string | null, created_by: string | null) => {
+export const hardDeleteHistoryByIdRepo = async (id: string | null, created_by: string) => {
     return prisma.history.deleteMany({
         where: { ...(id !== null && { id }), ...(created_by !== null && { created_by })},
     })

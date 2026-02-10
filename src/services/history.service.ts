@@ -13,7 +13,7 @@ export const hardDeleteAllHistoryService = async (created_by: string) => {
     return await hardDeleteHistoryByIdRepo(null, created_by)
 }
 
-export const hardDeleteHistoryByIdService = async (id: string, created_by: string | null) => {
+export const hardDeleteHistoryByIdService = async (id: string, created_by: string) => {
     // Repo : Find history by id
     const history = await findHistoryByIdRepo(id)
     if (!history) return null
