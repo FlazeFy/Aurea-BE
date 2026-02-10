@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllCareProductService } from "../services/care_product.service"
+import { getAllCareProductService, getCareProductByIdService } from "../services/care_product.service"
 
 export const getAllCareProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -21,6 +21,25 @@ export const getAllCareProduct = async (req: Request, res: Response, next: NextF
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const getCareProductById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const id = req.params.id as string
+
+        // Service : Get care product by id
+        const result = await getCareProductByIdService(id)
+        if (!result) throw { code: 404, message: "Care product not found" }
+
+        // Success response
+        res.status(200).json({
+            message: "Get care product successful",
+            data: result
         })
     } catch (error: any) {
         next(error)

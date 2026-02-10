@@ -50,6 +50,45 @@ export const findAllCareProductRepo = async (page: number, limit: number, search
     return { data, total }
 }
 
+export const findCareProductByIdRepo = async (id: string) => {
+    return await prisma.care_product.findUnique({
+        select: {
+            id: true, product_name: true, brand: true, product_category: true, product_type: true, ingredients: true, 
+            key_ingredients: true, alcohol_free: true, fragrance_free: true, paraben_free: true, recommended_for: true, suitable_skin: true, 
+            created_at: true, updated_at: true, usage_instruction: true,
+            comments: {
+                select: {
+                    user: {
+                        select: { username: true }
+                    },
+                    comment_body: true,
+                    created_at: true
+                }
+            },
+            likes: {
+                select: {
+                    user: {
+                        select: { username: true }
+                    }
+                }
+            },
+            creator: {
+                select: {
+                    username: true, id: true
+                }
+            },
+            _count: { 
+                select: { 
+                    inventories: true, 
+                    comments: true, 
+                    likes: true 
+                } 
+            }
+        },
+        where: { id },
+    })
+}
+
 export const findRandomCareProductRepo = async () => {
     const count = await prisma.care_product.count()
     if (count === 0) return null
