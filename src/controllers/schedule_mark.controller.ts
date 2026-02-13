@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getAllScheduleMarkService, hardDeleteScheduleMarkByIdService, postCreateScheduleMarkService } from "../services/schedule_mark.service"
+import { exportAllScheduleMarkService, getAllScheduleMarkService, hardDeleteScheduleMarkByIdService, postCreateScheduleMarkService } from "../services/schedule_mark.service"
 
 export const getAllScheduleMark = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -66,6 +66,25 @@ export const postCreateScheduleMark = async (req: Request, res: Response, next: 
         return res.status(201).json({
             message: "Schedule mark created"
         })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+// Export dataset controller
+export const exportScheduleMarkController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Export history as CSV
+        const result = await exportAllScheduleMarkService(userId)
+        if (!result) throw { code: 404, message: "Schedule mark not found" }
+
+        // Success response
+        res.header('Content-Type','text/csv')
+        res.attachment(`schedule_mark_export.csv`)
+        return res.send(result)
     } catch (error: any) {
         next(error)
     }

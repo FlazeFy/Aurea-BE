@@ -61,3 +61,29 @@ export const createScheduleMarkRepo = async (used_schedule_id: string) => {
         },
     })
 }
+
+export const findAllScheduleMarkExportRepo = async (userId: string) => {
+    return prisma.schedule_mark.findMany({
+        where: { 
+            used_schedule: {
+                inventory: { created_by: userId }
+            } 
+        },
+        orderBy: { created_at: 'desc' },
+        select: {
+            created_at: true, used_schedule: {
+                select: {
+                    day_name: true, time: true, inventory: {
+                        select: {
+                            care_product: {
+                                select: {
+                                    product_name: true, product_category: true, product_type: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+}

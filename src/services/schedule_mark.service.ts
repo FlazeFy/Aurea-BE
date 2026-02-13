@@ -1,4 +1,5 @@
-import { createScheduleMarkRepo, findAllScheduleMarkRepo, findScheduleMarkByIdRepo, hardDeleteScheduleMarkByIdRepo } from "../repositories/schedule_mark.repository"
+import { exportToCSV } from "../helpers/converter.helper"
+import { createScheduleMarkRepo, findAllScheduleMarkExportRepo, findAllScheduleMarkRepo, findScheduleMarkByIdRepo, hardDeleteScheduleMarkByIdRepo } from "../repositories/schedule_mark.repository"
 import { findUsedScheduleByIdRepo } from "../repositories/used_schedule.repository"
 
 export const getAllScheduleMarkService = async (page: number, limit: number, userId: string | null) => {
@@ -27,4 +28,25 @@ export const postCreateScheduleMarkService = async (used_schedule_id: string, us
     
     // Repo : Create schedule mark
     return await createScheduleMarkRepo(used_schedule_id)
+}
+
+export const  exportAllScheduleMarkService = async (userId: string) => {
+    // Repo : Find all schedule mark
+    const res = await findAllScheduleMarkExportRepo(userId)
+    if (!res || res.length === 0) return null
+
+    // Remap for nested object
+    const mapped = res.map(item => ({
+        product_name: item.used_schedule.inventory.care_product.product_name,
+        product_category: item.used_schedule.inventory.care_product.product_category,
+        product_type: item.used_schedule.inventory.care_product.product_type,
+        day: item.used_schedule.day_name,
+        time: item.used_schedule.time,
+        created_at: item.created_at
+    }))
+
+    // Dataset headers
+    const fields = ['product_name', 'product_category', 'product_type', 'day', 'time', 'created_at']
+
+    return exportToCSV(mapped, fields)
 }
