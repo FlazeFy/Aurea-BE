@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllInventoryService, hardDeleteInventoryByIdService } from "../services/inventory.service"
+import { exportAllInventoryService, getAllInventoryService, hardDeleteInventoryByIdService } from "../services/inventory.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getAllInventory = async (req: Request, res: Response, next: NextFunction) => {
@@ -48,6 +48,25 @@ export const hardDeleteInventoryById = async (req: Request, res: Response, next:
             message: "Delete inventory successful",
             data: result,
         })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+// Export dataset controller
+export const exportInventoryController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Export inventory as CSV
+        const result = await exportAllInventoryService(userId)
+        if (!result) throw { code: 404, message: "Inventory not found" }
+
+        // Success response
+        res.header('Content-Type','text/csv')
+        res.attachment(`inventory_export.csv`)
+        return res.send(result)
     } catch (error: any) {
         next(error)
     }

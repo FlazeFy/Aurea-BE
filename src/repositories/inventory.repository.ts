@@ -99,3 +99,18 @@ export const hardDeleteInventoryByIdRepo = async (id: string, created_by: string
         where: { id, created_by }
     })
 }
+
+export const findAllInventoryExportRepo = async (userId: string) => {
+    return prisma.inventory.findMany({
+        where: { created_by: userId },
+        orderBy: { created_at: 'desc' },
+        select: {
+            qty: true, inventory_note: true, created_at: true,
+            care_product: {
+                select: {
+                    product_name: true, product_category: true, product_type: true, brand: true
+                }
+            }
+        }
+    })
+}
