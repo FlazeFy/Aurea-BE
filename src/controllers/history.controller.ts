@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getAllHistoryService, hardDeleteAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
+import { exportAllHistoryService, getAllHistoryService, hardDeleteAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
 
 export const getAllHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -62,6 +62,25 @@ export const hardDeleteAllHistory = async (req: Request, res: Response, next: Ne
         res.status(200).json({
             message: "Delete all history successful"
         })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+// Export dataset controller
+export const exportHistoryController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get user id
+        const { userId, role } = extractUserFromLocals(res)
+
+        // Service : Export history as CSV
+        const result = await exportAllHistoryService(role === "user" ? userId : null)
+        if (!result) throw { code: 404, message: "History not found" }
+
+        // Success response
+        res.header('Content-Type','text/csv')
+        res.attachment(`history_export${role === 'admin' ? '_all':''}.csv`)
+        return res.send(result)
     } catch (error: any) {
         next(error)
     }
