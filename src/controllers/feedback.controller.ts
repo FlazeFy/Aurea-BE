@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 import { exportAllFeedbackService, getAllFeedbackService, hardDeleteFeedbackByIdService, postCreateFeedbackService } from "../services/feedback.service"
 
-export const getAllFeedback = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllFeedbackController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -25,7 +25,7 @@ export const getAllFeedback = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const postCreateFeedback = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateFeedbackController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { feedback_rate, feedback_note } = req.body
@@ -46,7 +46,7 @@ export const postCreateFeedback = async (req: Request, res: Response, next: Next
     }
 }
 
-export const hardDeleteFeedbackById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteFeedbackByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string

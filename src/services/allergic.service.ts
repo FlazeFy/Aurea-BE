@@ -20,10 +20,8 @@ export const hardDeleteAllergicByIdService = async (id: string, created_by: stri
     return allergic
 }
 
-export const postCreateAllergicService = async (allergic_context: string, allergic_desc: string, userId: string) => {
-    // Repo : Create allergic
-    return await createAllergicRepo(allergic_context, allergic_desc, userId)
-}
+// Repo : Create allergic
+export const postCreateAllergicService = async (allergic_context: string, allergic_desc: string, userId: string) => await createAllergicRepo(allergic_context, allergic_desc, userId)
 
 export const  exportAllAllergicService = async () => {
     // Repo : Find all allergic

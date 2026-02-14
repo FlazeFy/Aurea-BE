@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 import { exportAllAllergicService, getAllAllergicService, hardDeleteAllergicByIdService, postCreateAllergicService } from "../services/allergic.service"
 
-export const getAllAllergic = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllAllergicController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -28,7 +28,7 @@ export const getAllAllergic = async (req: Request, res: Response, next: NextFunc
     }
 }
 
-export const postCreateAllergic = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateAllergicController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { allergic_context, allergic_desc } = req.body
@@ -49,7 +49,7 @@ export const postCreateAllergic = async (req: Request, res: Response, next: Next
     }
 }
 
-export const hardDeleteAllergicById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteAllergicByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string

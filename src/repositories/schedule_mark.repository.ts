@@ -36,9 +36,7 @@ export const findAllScheduleMarkRepo = async (page: number, limit: number, userI
     return { data, total }
 }  
 
-export const findScheduleMarkByIdRepo = async (id: string) => {
-    return prisma.schedule_mark.findUnique({ where: { id } })
-}
+export const findScheduleMarkByIdRepo = async (id: string) => prisma.schedule_mark.findUnique({ where: { id } })
 
 export const hardDeleteScheduleMarkByIdRepo = async (id: string, created_by: string | null) => {
     return prisma.schedule_mark.deleteMany({

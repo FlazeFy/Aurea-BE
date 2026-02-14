@@ -1,9 +1,7 @@
 import { prisma } from '../lib/prisma'
 import { v4 as uuidv4 } from 'uuid'
 
-export const findAllergicByIdRepo = async (id: string) => {
-    return prisma.allergic.findUnique({ where: { id } })
-}
+export const findAllergicByIdRepo = async (id: string) => prisma.allergic.findUnique({ where: { id } })
 
 export const findAllAllergicRepo = async (page: number, limit: number, userId: string | null) => {
     const skip = (page - 1) * limit

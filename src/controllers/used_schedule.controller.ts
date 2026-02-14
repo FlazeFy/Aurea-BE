@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 import { getAllUsedScheduleService, getUsedScheduleByDayService, hardDeleteUsedScheduleByIdService, postCreateUsedScheduleService, putUpdateUsedScheduleByIdService } from "../services/used_schedule.service"
 
-export const hardDeleteUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteUsedScheduleByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string
@@ -22,7 +22,7 @@ export const hardDeleteUsedScheduleById = async (req: Request, res: Response, ne
     }
 }
 
-export const getUsedScheduleByDay = async (req: Request, res: Response, next: NextFunction) => {
+export const getUsedScheduleByDayController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Params
         const day = req.params.day as string
@@ -44,7 +44,7 @@ export const getUsedScheduleByDay = async (req: Request, res: Response, next: Ne
     }
 }
 
-export const getAllUsedSchedule = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllUsedScheduleController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get user id
         const { userId } = extractUserFromLocals(res)
@@ -63,7 +63,7 @@ export const getAllUsedSchedule = async (req: Request, res: Response, next: Next
     }
 }
 
-export const postCreateUsedSchedule = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateUsedScheduleController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { inventory_id, day_name, time, schedule_note } = req.body
@@ -84,7 +84,7 @@ export const postCreateUsedSchedule = async (req: Request, res: Response, next: 
     }
 }
 
-export const putUpdateUsedScheduleById = async (req: Request, res: Response, next: NextFunction) => {
+export const putUpdateUsedScheduleByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string

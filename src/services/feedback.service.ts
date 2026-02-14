@@ -20,10 +20,8 @@ export const hardDeleteFeedbackByIdService = async (id: string) => {
     return feedback
 }
 
-export const postCreateFeedbackService = async (feedback_rate: number, feedback_note: string, userId: string) => {
-    // Repo : Create feedback
-    return await createFeedbackRepo(feedback_rate, feedback_note, userId)
-}
+// Repo : Create feedback
+export const postCreateFeedbackService = async (feedback_rate: number, feedback_note: string, userId: string) => await createFeedbackRepo(feedback_rate, feedback_note, userId)
 
 export const  exportAllFeedbackService = async () => {
     // Repo : Find all feedback

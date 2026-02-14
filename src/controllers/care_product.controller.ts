@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { getAllCareProductService, getCareProductByIdService, postCreateCareProductService } from "../services/care_product.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
-export const getAllCareProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllCareProductController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -28,7 +28,7 @@ export const getAllCareProduct = async (req: Request, res: Response, next: NextF
     }
 }
 
-export const getCareProductById = async (req: Request, res: Response, next: NextFunction) => {
+export const getCareProductByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string
@@ -47,7 +47,7 @@ export const getCareProductById = async (req: Request, res: Response, next: Next
     }
 }
 
-export const postCreateCareProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateCareProductController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { 

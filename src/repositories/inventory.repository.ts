@@ -89,11 +89,7 @@ export const findRandomInventoryByUserRepo = async (userId: string) => {
     })
 }
 
-export const findInventoryByIdRepo = async (id: string, created_by: string) => {
-    return prisma.inventory.findUnique({ 
-        where: { id, created_by },
-    })
-}
+export const findInventoryByIdRepo = async (id: string, created_by: string) => prisma.inventory.findUnique({ where: { id, created_by } })
 
 export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: string) => {
     const count = await prisma.inventory.count({
@@ -110,11 +106,7 @@ export const findRandomInventoryWithUsedScheduleByUserRepo = async (userId: stri
     })
 }
 
-export const hardDeleteInventoryByIdRepo = async (id: string, created_by: string) => {
-    return prisma.inventory.delete({
-        where: { id, created_by }
-    })
-}
+export const hardDeleteInventoryByIdRepo = async (id: string, created_by: string) => prisma.inventory.delete({ where: { id, created_by } })
 
 export const findAllInventoryExportRepo = async (userId: string) => {
     return prisma.inventory.findMany({

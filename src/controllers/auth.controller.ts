@@ -4,7 +4,7 @@ import { getAdminByIdService } from "../services/admin.service"
 import { loginService, refreshTokenService } from "../services/auth.service"
 import { getUserByIdService } from "../services/user.service"
 
-export const postLogin = async (req: Request, res: Response, next: NextFunction) => {
+export const postLoginController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Body
         const { email, password } = req.body
@@ -23,7 +23,7 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
-export const getRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+export const getRefreshTokenController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Auth header
         const authHeader = req.headers.authorization
@@ -45,7 +45,7 @@ export const getRefreshToken = async (req: Request, res: Response, next: NextFun
     }
 }
 
-export const getMyProfile = async (req: Request, res: Response, next: NextFunction) => {
+export const getMyProfileController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get user id
         const { userId, role } = extractUserFromLocals(res)

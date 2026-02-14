@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 import { exportAllHistoryService, getAllHistoryService, hardDeleteAllHistoryService, hardDeleteHistoryByIdService } from "../services/history.service"
 
-export const getAllHistory = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllHistoryController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -28,7 +28,7 @@ export const getAllHistory = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-export const hardDeleteHistoryById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteHistoryByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string
@@ -49,7 +49,7 @@ export const hardDeleteHistoryById = async (req: Request, res: Response, next: N
     }
 }
 
-export const hardDeleteAllHistory = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteAllHistoryController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get user id
         const { userId } = extractUserFromLocals(res)

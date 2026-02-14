@@ -26,9 +26,7 @@ export const findAllFeedbackRepo = async (page: number, limit: number) => {
     return {data, total}
 }
 
-export const findFeedbackByIdRepo = async (id: string) => {
-    return prisma.feedback.findUnique({ where: { id } })
-}
+export const findFeedbackByIdRepo = async (id: string) => prisma.feedback.findUnique({ where: { id } })
 
 export const createFeedbackRepo = async (feedback_rate: number, feedback_note: string, userId: string) => {
     return prisma.feedback.create({
@@ -38,9 +36,7 @@ export const createFeedbackRepo = async (feedback_rate: number, feedback_note: s
     })
 }
 
-export const deleteFeedbackByIdRepo = async (id: string) => {
-    return prisma.feedback.delete({ where: { id } })
-}
+export const deleteFeedbackByIdRepo = async (id: string) => prisma.feedback.delete({ where: { id } })
 
 export const findAllFeedbackExportRepo = async () => {
     return prisma.feedback.findMany({

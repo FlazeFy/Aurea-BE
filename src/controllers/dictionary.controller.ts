@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { getAllDictionaryService, hardDeleteDictionaryByIdService, postCreateDictionaryService } from "../services/dictionary.service"
 
-export const getAllDictionary = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllDictionaryController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1

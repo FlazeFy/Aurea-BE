@@ -18,13 +18,9 @@ export const findAllDictionaryRepo = async (page: number, limit: number) => {
     return {data, total}
 }
 
-export const findDictionaryByIdRepo = async (id: string) => {
-    return prisma.dictionary.findUnique({ where: { id } })
-}
+export const findDictionaryByIdRepo = async (id: string) => prisma.dictionary.findUnique({ where: { id } })
 
-export const deleteDictionaryByIdRepo = async (id: string) => {
-    return prisma.dictionary.delete({ where: { id } })
-}
+export const deleteDictionaryByIdRepo = async (id: string) => prisma.dictionary.delete({ where: { id } })
 
 export const findDictionaryByNameAndTypeRepo = async (dictionary_name: string, dictionary_type: string) => {
     return prisma.dictionary.findFirst({

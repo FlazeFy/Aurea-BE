@@ -1,10 +1,6 @@
 import { prisma } from '../lib/prisma'
 
-export const findHistoryByIdRepo = async (id: string) => {
-    return prisma.history.findUnique({
-        where: { id },
-    })
-}
+export const findHistoryByIdRepo = async (id: string) => prisma.history.findUnique({ where: { id } })
 
 export const findAllHistoryRepo = async (page: number, limit: number, userId: string | null) => {
     const skip = (page - 1) * limit

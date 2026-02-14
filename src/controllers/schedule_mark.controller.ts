@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 import { exportAllScheduleMarkService, getAllScheduleMarkService, hardDeleteScheduleMarkByIdService, postCreateScheduleMarkService } from "../services/schedule_mark.service"
 
-export const getAllScheduleMark = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllScheduleMarkController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -28,7 +28,7 @@ export const getAllScheduleMark = async (req: Request, res: Response, next: Next
     }
 }
 
-export const hardDeleteScheduleMarkById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteScheduleMarkByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string
@@ -50,7 +50,7 @@ export const hardDeleteScheduleMarkById = async (req: Request, res: Response, ne
     }
 }
 
-export const postCreateScheduleMark = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateScheduleMarkController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { used_schedule_id } = req.body

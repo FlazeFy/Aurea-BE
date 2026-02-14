@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { exportAllInventoryService, getAllInventoryService, hardDeleteInventoryByIdService, postCreateInventoryService, putUpdateInventoryByIdService } from "../services/inventory.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
-export const getAllInventory = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllInventoryController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Query params
         const page = Number(req.query.page) || 1
@@ -31,7 +31,7 @@ export const getAllInventory = async (req: Request, res: Response, next: NextFun
     }
 }
 
-export const hardDeleteInventoryById = async (req: Request, res: Response, next: NextFunction) => {
+export const hardDeleteInventoryByIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Param
         const id = req.params.id as string
@@ -53,7 +53,7 @@ export const hardDeleteInventoryById = async (req: Request, res: Response, next:
     }
 }
 
-export const postCreateInventory = async (req: Request, res: Response, next: NextFunction) => {
+export const postCreateInventoryController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
         const { care_product_id, qty, inventory_note } = req.body

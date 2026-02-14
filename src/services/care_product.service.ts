@@ -13,13 +13,8 @@ export const getAllCareProductService = async (page: number, limit: number, sear
     return res
 }
 
-export const getCareProductByIdService = async (id: string) => {
-    // Repo : Find care product by id
-    const res = await findCareProductByIdRepo(id)
-    if (!res) return null
-
-    return res
-}
+// Repo : Find care product by id
+export const getCareProductByIdService = async (id: string) => await findCareProductByIdRepo(id)
 
 export const postCreateCareProductService = async (
     product_name: string, brand: string, product_category: string, product_type: string, ingredients: string[] | undefined, key_ingredients: string[] | undefined, alcohol_free: boolean, 
