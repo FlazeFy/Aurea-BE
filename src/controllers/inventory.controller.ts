@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { exportAllInventoryService, getAllInventoryService, hardDeleteInventoryByIdService, postCreateInventoryService } from "../services/inventory.service"
+import { exportAllInventoryService, getAllInventoryService, hardDeleteInventoryByIdService, postCreateInventoryService, putUpdateInventoryByIdService } from "../services/inventory.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getAllInventory = async (req: Request, res: Response, next: NextFunction) => {
@@ -68,6 +68,31 @@ export const postCreateInventory = async (req: Request, res: Response, next: Nex
         // Success response
         return res.status(201).json({
             message: "Inventory created",
+            data: result
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const putUpdateInventoryByIdController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const id = req.params.id as string
+
+        // Request body
+        const { qty, inventory_note } = req.body
+
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Update inventory by id
+        const result = await putUpdateInventoryByIdService(id, qty, inventory_note, userId)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(200).json({
+            message: "Inventory updated",
             data: result
         })
     } catch (error: any) {

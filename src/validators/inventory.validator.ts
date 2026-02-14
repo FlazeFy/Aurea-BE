@@ -5,3 +5,8 @@ export const inventorySchema: ValidatorSchema = {
     qty: { required: true, min: 1, max: 100 },
     inventory_note: { required: false, max: 255 }
 }
+
+export const updateInventorySchema: ValidatorSchema = {
+    qty: { required: true, min: 1, max: 100 },
+    inventory_note: { required: false, max: 255 }
+}

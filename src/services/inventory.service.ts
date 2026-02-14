@@ -1,7 +1,7 @@
 import { exportToCSV } from "../helpers/converter.helper"
 import { sendEmail } from "../helpers/mailer.helper"
 import { findCareProductByIdRepo } from "../repositories/care_product.repository"
-import { createInventoryRepo, findAllInventoryExportRepo, findAllInventoryRepo, findInventoryByIdRepo, hardDeleteInventoryByIdRepo } from "../repositories/inventory.repository"
+import { createInventoryRepo, findAllInventoryExportRepo, findAllInventoryRepo, findInventoryByIdRepo, hardDeleteInventoryByIdRepo, updateInventoryByIdRepo } from "../repositories/inventory.repository"
 import { hardDeleteUsedScheduleByInventoryIdRepo } from "../repositories/used_schedule.repository"
 import { findUserByIdRepo } from "../repositories/user.repository"
 import { createInventoryEmailTemplate } from "../templates/create_inventory.template"
@@ -28,7 +28,7 @@ export const hardDeleteInventoryByIdService = async (id: string, created_by: str
     return inventory
 }
 
-export const  exportAllInventoryService = async (userId: string) => {
+export const exportAllInventoryService = async (userId: string) => {
     // Repo : Find all inventory
     const res = await findAllInventoryExportRepo(userId)
     if (!res || res.length === 0) return null
@@ -69,4 +69,13 @@ export const postCreateInventoryService = async (productId: string, qty: number 
     )
 
     return inventory
+}
+
+export const putUpdateInventoryByIdService = async (id: string, qty: number, inventory_note: string | null, userId: string) => {
+    // Validate : Check if inventory exist
+    const isExist = await findInventoryByIdRepo(id, userId)
+    if (!isExist) throw { code: 404, message: 'Inventory not found' }
+
+    // Repo : Update inventory by id
+    return await updateInventoryByIdRepo(id, qty, inventory_note, userId)
 }

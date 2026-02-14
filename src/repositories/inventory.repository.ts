@@ -9,6 +9,13 @@ export const createInventoryRepo = async (care_product_id: string, qty: number, 
     })
 }
 
+export const updateInventoryByIdRepo = async (id: string, qty: number, inventory_note: string | null, userId: string) => {
+    return prisma.inventory.update({
+        where: { id, created_by: userId },
+        data: { qty, inventory_note }
+    })
+}
+
 export const findAllInventoryRepo = async (page: number, limit: number, search: string | null, product_category: string | null, product_type: string | null, userId: string) => {
     const skip = (page - 1) * limit
     const whereClause: any = {}
