@@ -1,5 +1,9 @@
+import { sendEmail } from "../helpers/mailer.helper"
 import { findAllCareProductRepo, findCareProductByIdRepo, findCareProductByProductNameAndBrandRepo, createCareProductRepo } from "../repositories/care_product.repository"
 import { findDictionaryByNameAndTypeRepo } from "../repositories/dictionary.repository"
+import { createInventoryRepo } from "../repositories/inventory.repository"
+import { findUserByIdRepo } from "../repositories/user.repository"
+import { createProductAndInventoryEmailTemplate } from "../templates/create_product.template"
 
 export const getAllCareProductService = async (page: number, limit: number, search: string | null, product_category: string | null, product_type: string | null) => {
     // Repo : Find all care product
@@ -19,7 +23,7 @@ export const getCareProductByIdService = async (id: string) => {
 
 export const postCreateCareProductService = async (
     product_name: string, brand: string, product_category: string, product_type: string, ingredients: string[] | undefined, key_ingredients: string[] | undefined, alcohol_free: boolean, 
-    fragrance_free: boolean, paraben_free: boolean, recommended_for: string, suitable_skin: string, usage_instruction: string, userId: string | null) => {
+    fragrance_free: boolean, paraben_free: boolean, recommended_for: string, suitable_skin: string, usage_instruction: string, qty: number | null, inventory_note: string | null, userId: string | null) => {
     // Validate dictionary
     const isProductCategoryExist = await findDictionaryByNameAndTypeRepo(product_category, 'product_category')
     if (!isProductCategoryExist) throw { code: 400, message: "Product category not found" }
@@ -42,6 +46,25 @@ export const postCreateCareProductService = async (
 
     // Repo : Create care product
     const product = await createCareProductRepo(product_name, brand, product_category, product_type, ingredients, key_ingredients, alcoholFree, fragranceFree, parabenFree, recommended_for, suitable_skin, usage_instruction, userId)
+    if (!product) return null
 
-    return product
+    // Repo : Create inventory
+    let inventory = null
+    if (userId) inventory = await createInventoryRepo(product.id, qty ?? 1, inventory_note, userId)
+    if (inventory && userId) {
+        // Repo : Find user for email broadcast
+        const user = await findUserByIdRepo(userId)
+        if (!user) throw { code: 404, message: 'User not found' } 
+        
+        // Broadcast email
+        await sendEmail(
+            user.email, "New Product!",
+            createProductAndInventoryEmailTemplate(
+                user.username, product.product_name, product.brand, product.product_category, product.product_type, 
+                product.alcohol_free, product.fragrance_free, product.paraben_free, inventory.qty, inventory.inventory_note,
+                product.recommended_for, product.suitable_skin, product.usage_instruction)
+        )
+    }
+
+    return { product, inventory }
 }

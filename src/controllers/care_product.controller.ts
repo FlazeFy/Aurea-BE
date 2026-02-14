@@ -50,13 +50,17 @@ export const getCareProductById = async (req: Request, res: Response, next: Next
 export const postCreateCareProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Request body
-        const { product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction } = req.body
+        const { 
+            product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, 
+            fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction, qty, inventory_note } = req.body
 
         // Get user id
         const { userId, role } = extractUserFromLocals(res)
 
         // Service : Create care product
-        const result = await postCreateCareProductService(product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction, role === "admin" ? null : userId)
+        const result = await postCreateCareProductService(
+            product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, 
+            fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction, qty, inventory_note, role === "admin" ? null : userId)
         if (!result) throw { code: 500, message: "Something went wrong" }
 
         // Success response

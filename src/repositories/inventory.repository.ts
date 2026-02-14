@@ -1,4 +1,13 @@
 import { prisma } from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
+
+export const createInventoryRepo = async (care_product_id: string, qty: number, inventory_note: string | null, userId: string) => {
+    return prisma.inventory.create({
+        data: {
+            id: uuidv4(), care_product_id, qty, inventory_note, created_at: new Date(), created_by: userId,
+        },
+    })
+}
 
 export const findAllInventoryRepo = async (page: number, limit: number, search: string | null, product_category: string | null, product_type: string | null, userId: string) => {
     const skip = (page - 1) * limit
