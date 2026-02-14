@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { getAllCareProductService, getCareProductByIdService } from "../services/care_product.service"
+import { getAllCareProductService, getCareProductByIdService, postCreateCareProductService } from "../services/care_product.service"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getAllCareProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -39,6 +40,28 @@ export const getCareProductById = async (req: Request, res: Response, next: Next
         // Success response
         res.status(200).json({
             message: "Get care product successful",
+            data: result
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const postCreateCareProduct = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Request body
+        const { product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction } = req.body
+
+        // Get user id
+        const { userId, role } = extractUserFromLocals(res)
+
+        // Service : Create care product
+        const result = await postCreateCareProductService(product_name, brand, product_category, product_type, ingredients, key_ingredients, alcohol_free, fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction, role === "admin" ? null : userId)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(201).json({
+            message: "Care product created",
             data: result
         })
     } catch (error: any) {

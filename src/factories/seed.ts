@@ -16,8 +16,37 @@ import { adminFactoryMany } from './admin.factory'
 const seedDictionary = async () => {
     // Manual defined dictionary
     const dct = [
+        // Gender
         { dictionary_type: 'gender', dictionary_name: 'male' },
         { dictionary_type: 'gender', dictionary_name: 'female' },
+        // Product Category
+        { dictionary_type: 'product_category', dictionary_name: 'cleanser' },
+        { dictionary_type: 'product_category', dictionary_name: 'toner' },
+        { dictionary_type: 'product_category', dictionary_name: 'serum' },
+        { dictionary_type: 'product_category', dictionary_name: 'moisturizer' },
+        { dictionary_type: 'product_category', dictionary_name: 'sunscreen' },
+        { dictionary_type: 'product_category', dictionary_name: 'exfoliator' },
+        { dictionary_type: 'product_category', dictionary_name: 'mask' },
+        { dictionary_type: 'product_category', dictionary_name: 'treatment' },
+        { dictionary_type: 'product_category', dictionary_name: 'eye_care' },
+        { dictionary_type: 'product_category', dictionary_name: 'lip_care' },
+        { dictionary_type: 'product_category', dictionary_name: 'body_care' },
+        // Product Type
+        { dictionary_type: 'product_type', dictionary_name: 'gel' },
+        { dictionary_type: 'product_type', dictionary_name: 'cream' },
+        { dictionary_type: 'product_type', dictionary_name: 'lotion' },
+        { dictionary_type: 'product_type', dictionary_name: 'foam' },
+        { dictionary_type: 'product_type', dictionary_name: 'oil' },
+        { dictionary_type: 'product_type', dictionary_name: 'balm' },
+        { dictionary_type: 'product_type', dictionary_name: 'essence' },
+        { dictionary_type: 'product_type', dictionary_name: 'ampoule' },
+        { dictionary_type: 'product_type', dictionary_name: 'stick' },
+        { dictionary_type: 'product_type', dictionary_name: 'spray' },
+        { dictionary_type: 'product_type', dictionary_name: 'powder' },
+        { dictionary_type: 'product_type', dictionary_name: 'wash_off' },
+        { dictionary_type: 'product_type', dictionary_name: 'peel_off' },
+        { dictionary_type: 'product_type', dictionary_name: 'sheet_mask' },
+        { dictionary_type: 'product_type', dictionary_name: 'sleeping_mask' },
     ]
     for (const dt of dct) {
         await dictionaryFactory(dt.dictionary_type, dt.dictionary_name)

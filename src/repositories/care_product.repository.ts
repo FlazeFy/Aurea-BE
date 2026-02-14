@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 export const findAllCareProductRepo = async (page: number, limit: number, search: string | null, product_category: string | null, product_type: string | null) => {
     const skip = (page - 1) * limit
@@ -46,6 +47,24 @@ export const findAllCareProductRepo = async (page: number, limit: number, search
     ])
 
     return { data, total }
+}
+
+export const findCareProductByProductNameAndBrandRepo = async (product_name: string, brand: string) => {
+    return prisma.care_product.findFirst({ where: { product_name, brand } })
+}
+
+export const createCareProductRepo = async (
+    product_name: string, brand: string, product_category: string, product_type: string, ingredients: string[] | undefined, 
+    key_ingredients: string[] | undefined, alcohol_free: boolean, fragrance_free: boolean, paraben_free: boolean, recommended_for: string, 
+    suitable_skin: string, usage_instruction: string, userId: string | null) => {
+
+    return prisma.care_product.create({
+        data: {
+            id: uuidv4(), product_name, brand, product_category, product_type, ingredients, key_ingredients, 
+            alcohol_free, fragrance_free, paraben_free, recommended_for, suitable_skin, usage_instruction, 
+            created_at: new Date(), created_by: userId,
+        },
+    })
 }
 
 export const findCareProductByIdRepo = async (id: string) => {
