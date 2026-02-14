@@ -42,18 +42,16 @@ export const deleteFeedbackByIdRepo = async (id: string) => {
     return prisma.feedback.delete({ where: { id } })
 }
 
-export const findAllHistoryExportRepo = async () => {
-    const where = userId ? { created_by: userId } : {}
-    return prisma.history.findMany({
-        where,
+export const findAllFeedbackExportRepo = async () => {
+    return prisma.feedback.findMany({
         orderBy: {
             created_at: 'desc'
         },
         select: {
-            history_type: true, history_context: true, created_at: true,
-            user: !userId ? {
+            feedback_rate: true, feedback_note: true, created_at: true,
+            user: {
                 select: { username: true }
-            } : {}
+            } 
         }
     })
 }

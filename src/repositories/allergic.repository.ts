@@ -38,3 +38,17 @@ export const createAllergicRepo = async (allergic_context: string, allergic_desc
         },
     })
 }
+
+export const findAllAllergicExportRepo = async () => {
+    return prisma.allergic.findMany({
+        orderBy: {
+            created_at: 'desc'
+        },
+        select: {
+            allergic_context: true, allergic_desc: true, created_at: true,
+            user: {
+                select: { username: true }
+            } 
+        }
+    })
+}

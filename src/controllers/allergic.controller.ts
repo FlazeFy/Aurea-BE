@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getAllAllergicService, hardDeleteAllergicByIdService, postCreateAllergicService } from "../services/allergic.service"
+import { exportAllAllergicService, getAllAllergicService, hardDeleteAllergicByIdService, postCreateAllergicService } from "../services/allergic.service"
 
 export const getAllAllergic = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -36,7 +36,7 @@ export const postCreateAllergic = async (req: Request, res: Response, next: Next
         // Get user id
         const { userId } = extractUserFromLocals(res)
 
-        // Service : Create feedback
+        // Service : Create allergic
         const result = await postCreateAllergicService(allergic_context, allergic_desc, userId)
         if (!result) throw { code: 500, message: "Something went wrong" }
 
@@ -64,6 +64,22 @@ export const hardDeleteAllergicById = async (req: Request, res: Response, next: 
             message: "Delete allergic successful",
             data: result,
         })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+// Export dataset controller
+export const exportAllergicController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Service : Export history as CSV
+        const result = await exportAllAllergicService()
+        if (!result) throw { code: 404, message: "Allergic not found" }
+
+        // Success response
+        res.header('Content-Type','text/csv')
+        res.attachment('allergic_export_all.csv')
+        return res.send(result)
     } catch (error: any) {
         next(error)
     }
