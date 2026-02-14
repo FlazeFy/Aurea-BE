@@ -1,6 +1,10 @@
 import { exportToCSV } from "../helpers/converter.helper"
-import { findAllInventoryExportRepo, findAllInventoryRepo, findInventoryByIdRepo, hardDeleteInventoryByIdRepo } from "../repositories/inventory.repository"
+import { sendEmail } from "../helpers/mailer.helper"
+import { findCareProductByIdRepo } from "../repositories/care_product.repository"
+import { createInventoryRepo, findAllInventoryExportRepo, findAllInventoryRepo, findInventoryByIdRepo, hardDeleteInventoryByIdRepo } from "../repositories/inventory.repository"
 import { hardDeleteUsedScheduleByInventoryIdRepo } from "../repositories/used_schedule.repository"
+import { findUserByIdRepo } from "../repositories/user.repository"
+import { createInventoryEmailTemplate } from "../templates/create_inventory.template"
 
 export const getAllInventoryService = async (page: number, limit: number, search: string | null, product_category: string | null, product_type: string | null, userId: string) => {
     // Repo : Find all inventory
@@ -44,4 +48,25 @@ export const  exportAllInventoryService = async (userId: string) => {
     const fields = ['product_name', 'product_category', 'product_type', 'brand', 'qty', 'inventory_note', 'created_at']
 
     return exportToCSV(mapped, fields)
+}
+
+export const postCreateInventoryService = async (productId: string, qty: number | null, inventory_note: string | null, userId: string) => {
+    // Validate : Check if care product exist
+    const product = await findCareProductByIdRepo(productId)
+    if (!product) throw { code: 404, message: 'Care product not found' }
+
+    // Repo : Create inventory
+    const inventory = await createInventoryRepo(productId, qty ?? 1, inventory_note, userId)
+
+    // Repo : Find user for email broadcast
+    const user = await findUserByIdRepo(userId)
+    if (!user) throw { code: 404, message: 'User not found' } 
+    
+    // Broadcast email
+    await sendEmail(
+        user.email, "New Inventory added!",
+        createInventoryEmailTemplate(user.username, product.product_name, product.brand, product.product_category, product.product_type, inventory.qty, inventory.inventory_note)
+    )
+
+    return inventory
 }
