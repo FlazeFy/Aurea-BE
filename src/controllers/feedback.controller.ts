@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { extractUserFromLocals } from "../helpers/auth.helper"
-import { getAllFeedbackService, hardDeleteFeedbackByIdService, postCreateFeedbackService } from "../services/feedback.service"
+import { exportAllFeedbackService, getAllFeedbackService, hardDeleteFeedbackByIdService, postCreateFeedbackService } from "../services/feedback.service"
 
 export const getAllFeedback = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -60,6 +60,22 @@ export const hardDeleteFeedbackById = async (req: Request, res: Response, next: 
             message: "Delete feedback successful",
             data: result,
         })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+// Export dataset controller
+export const exportFeedbackController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Service : Export history as CSV
+        const result = await exportAllFeedbackService()
+        if (!result) throw { code: 404, message: "Feedback not found" }
+
+        // Success response
+        res.header('Content-Type','text/csv')
+        res.attachment('feedback_export_all.csv')
+        return res.send(result)
     } catch (error: any) {
         next(error)
     }
