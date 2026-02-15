@@ -13,6 +13,7 @@ import authRouter from './routers/auth.router'
 import careProductRouter from './routers/care_product.router'
 import inventoryRouter from './routers/inventory.router'
 import commentRouter from './routers/comment.router'
+import likeRouter from './routers/like.router'
 import { auditError } from './helpers/audit.helper'
 
 // Load env
@@ -41,6 +42,7 @@ app.use("/api/schedule_marks", scheduleMarkRouter)
 app.use("/api/care_products", careProductRouter)
 app.use("/api/inventories", inventoryRouter)
 app.use("/api/comments", commentRouter)
+app.use("/api/likes", likeRouter)
 
 app.use(( err: any, req: Request, res: Response, next: NextFunction) => {
     const statusCode = err.code || err.status || 500
