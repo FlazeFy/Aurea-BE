@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express"
-import { getCommentByProductIdService } from "../services/comment.service"
+import { getCommentByProductIdService, hardDeleteCommentByIdService } from "../services/comment.service"
+import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getCommentByProductIdController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -21,6 +22,28 @@ export const getCommentByProductIdController = async (req: Request, res: Respons
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const hardDeleteCommentByIdController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Param
+        const id = req.params.id as string
+
+        // Get user id
+        const { userId, role } = extractUserFromLocals(res)
+
+        // Service : Hard delete comment by id
+        const result = await hardDeleteCommentByIdService(id, role === "admin" ? null : userId)
+        if (!result) throw { code: 404, message: "Comment not found" }
+
+        // Success response
+        res.status(200).json({
+            message: "Delete comment successful",
+            data: result,
         })
     } catch (error: any) {
         next(error)

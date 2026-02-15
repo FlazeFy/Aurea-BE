@@ -24,7 +24,7 @@ export const findAllAllergicRepo = async (page: number, limit: number, userId: s
 }
 
 export const hardDeleteAllergicByIdRepo = async (id: string, created_by: string | null) => {
-    return prisma.allergic.deleteMany({
+    return prisma.allergic.delete({
         where: { id, ...(created_by !== null && { created_by })},
     })
 }

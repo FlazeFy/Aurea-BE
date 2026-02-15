@@ -6,10 +6,12 @@ export const hardDeleteUsedScheduleByIdController = async (req: Request, res: Re
     try {
         // Param
         const id = req.params.id as string
-        const created_by = null // for now
+
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Hard delete used schedule by id
-        const result = await hardDeleteUsedScheduleByIdService(id, created_by)
+        const result = await hardDeleteUsedScheduleByIdService(id, userId)
         if (!result) throw { code: 404, message: "Used schedule not found" }
 
         // Success response

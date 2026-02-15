@@ -26,3 +26,11 @@ export const findCommentByProductIdRepo = async (page: number, limit: number, pr
 
     return { data, total }
 }
+
+export const findCommentByIdRepo = async (id: string) => prisma.comment.findUnique({ where: { id } })
+
+export const hardDeleteCommentByIdRepo = async (id: string, created_by: string | null) => {
+    return prisma.comment.delete({
+        where: { id, ...(created_by !== null && { created_by })},
+    })
+}

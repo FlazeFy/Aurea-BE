@@ -53,10 +53,12 @@ export const hardDeleteAllergicByIdController = async (req: Request, res: Respon
     try {
         // Param
         const id = req.params.id as string
-        const created_by = null // for now
+        
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
 
         // Service : Hard delete allergic by id
-        const result = await hardDeleteAllergicByIdService(id, created_by)
+        const result = await hardDeleteAllergicByIdService(id, userId)
         if (!result) throw { code: 404, message: "Allergic not found" }
 
         // Success response
