@@ -1,4 +1,4 @@
-import { findCommentByIdRepo, findCommentByProductIdRepo, hardDeleteCommentByIdRepo } from "../repositories/comment.repository"
+import { createCommentRepo, findCommentByIdRepo, findCommentByProductIdRepo, hardDeleteCommentByIdRepo } from "../repositories/comment.repository"
 
 export const getCommentByProductIdService = async (page: number, limit: number, productId: string) => {
     // Repo : Find all comment
@@ -18,3 +18,6 @@ export const hardDeleteCommentByIdService = async (id: string, created_by: strin
 
     return comment
 }
+
+// Repo : Create comment
+export const postCreateCommentService = async (care_product_id: string, comment_body: string, userId: string) => await createCommentRepo(care_product_id, comment_body, userId)

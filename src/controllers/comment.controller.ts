@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import { getCommentByProductIdService, hardDeleteCommentByIdService } from "../services/comment.service"
+import { getCommentByProductIdService, hardDeleteCommentByIdService, postCreateCommentService } from "../services/comment.service"
 import { extractUserFromLocals } from "../helpers/auth.helper"
 
 export const getCommentByProductIdController = async (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +22,27 @@ export const getCommentByProductIdController = async (req: Request, res: Respons
             meta: {
                 page, limit, total: result.total, total_page: Math.ceil(result.total / limit),
             },
+        })
+    } catch (error: any) {
+        next(error)
+    }
+}
+
+export const postCreateCommentController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Request body
+        const { care_product_id, comment_body } = req.body
+
+        // Get user id
+        const { userId } = extractUserFromLocals(res)
+
+        // Service : Create comment
+        const result = await postCreateCommentService(comment_body, care_product_id, userId)
+        if (!result) throw { code: 500, message: "Something went wrong" }
+
+        // Success response
+        return res.status(201).json({
+            message: "Comment created"
         })
     } catch (error: any) {
         next(error)
