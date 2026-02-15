@@ -25,3 +25,15 @@ export const findLikeByProductIdRepo = async (page: number, limit: number, produ
 
     return { data, total }
 }
+
+export const findLikeByProductIdAndUserIdRepo = async (care_product_id: string, created_by: string) => {
+    return prisma.like.findFirst({
+        where: { care_product_id, created_by },
+    })
+}
+
+export const hardDeleteLikeByProductIdRepo = async (care_product_id: string, created_by: string) => {
+    return prisma.like.deleteMany({
+        where: { care_product_id, created_by },
+    })
+}
