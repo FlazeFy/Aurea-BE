@@ -1,0 +1,31 @@
+import swaggerJsdoc from "swagger-jsdoc"
+import { OpenAPIV3 } from "openapi-types"
+
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Aurea Express API",
+            version: "1.0.0",
+            description: "API documentation for Aurea",
+        },
+        servers: [
+            {
+                url: "http://localhost:3000",
+            },
+        ],
+        paths: {},
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                },
+            },
+        },
+    } as OpenAPIV3.Document,
+    apis: ["./src/docs/**/*.ts"],
+}
+
+export const swaggerSpec = swaggerJsdoc(options)
