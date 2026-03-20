@@ -1,6 +1,8 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 import cors from "cors"
 import dotenv from "dotenv"
+import swaggerUi from "swagger-ui-express"
+import { swaggerSpec } from "./lib/swagger"
 
 // Router
 import feedbackRouter from "./routers/feedback.router"
@@ -26,23 +28,25 @@ const app: Application = express()
 // Middleware
 app.use(cors())
 app.use(express.json())
+// Swagger
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // Routes
 app.get("/", (req: Request, res: Response) => {
     res.status(200).send("Hello world")
 })
 
-app.use("/api/auth", authRouter)
-app.use("/api/feedbacks", feedbackRouter)
-app.use("/api/histories", historyRouter)
-app.use("/api/dictionaries", dictionaryRouter)
-app.use("/api/allergics", allergicRouter)
-app.use("/api/used_schedules", usedScheduleRouter)
-app.use("/api/schedule_marks", scheduleMarkRouter)
-app.use("/api/care_products", careProductRouter)
-app.use("/api/inventories", inventoryRouter)
-app.use("/api/comments", commentRouter)
-app.use("/api/likes", likeRouter)
+app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/feedbacks", feedbackRouter)
+app.use("/api/v1/histories", historyRouter)
+app.use("/api/v1/dictionaries", dictionaryRouter)
+app.use("/api/v1/allergics", allergicRouter)
+app.use("/api/v1/used_schedules", usedScheduleRouter)
+app.use("/api/v1/schedule_marks", scheduleMarkRouter)
+app.use("/api/v1/care_products", careProductRouter)
+app.use("/api/v1/inventories", inventoryRouter)
+app.use("/api/v1/comments", commentRouter)
+app.use("/api/v1/likes", likeRouter)
 
 app.use(( err: any, req: Request, res: Response, next: NextFunction) => {
     const statusCode = err.code || err.status || 500
